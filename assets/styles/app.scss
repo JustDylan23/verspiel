@@ -1,0 +1,34 @@
+@import "./custom.scss";
+@import "~bootstrap/scss/bootstrap";
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $dark-grey; // default display color
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: shade-color($dark-grey, 15%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.form-control, .form-select {
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: $light-grey;
+  }
+}

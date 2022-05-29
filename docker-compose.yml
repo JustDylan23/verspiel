@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+    db:
+        image: mysql:latest
+        ports:
+            - '3306:3306'
+        environment:
+            - MYSQL_ROOT_PASSWORD=docker
+            - MYSQL_DATABASE=novel
+            - MYSQL_USER=symfony
+            - MYSQL_PASSWORD=docker
+        volumes:
+            - ./docker/mysql:/var/lib/mysql
+    phpmyadmin:
+        image: 'phpmyadmin/phpmyadmin:latest'
+        ports:
+            - '81:80'
+        links:
+            - db:mysql
+        environment:
+            MYSQL_USERNAME: root
+            MYSQL_ROOT_PASSWORD: docker
+            PMA_HOST: mysql
+    php:
+        build: ./docker/php
+        ports:
+            - '9000:9000'
+            - '8080:8080'
+        volumes:
+            - './:/var/www/symfony:cached'
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - '80:80'
+        volumes:
+            - './:/var/www/symfony:cached'
+    mailer:
+        image: schickling/mailcatcher
+        ports: [1025, 1080]
+

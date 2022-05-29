@@ -1,0 +1,73 @@
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "~bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+
+$white: #fff;
+$dark: #202124;
+$dark-grey: #3C4042;
+$light-grey: #606368;
+$primary: #BB86FC;
+
+$theme-colors: (
+        "dark": $dark,
+        "dark-grey": $dark-grey,
+        "light-grey": $light-grey,
+        "primary": $primary,
+        "danger": #D12836,
+);
+
+$body-bg: $dark;
+$body-color: $white;
+
+$card-bg: $dark-grey;
+
+$dropdown-bg: $dark-grey;
+$dropdown-color: $white;
+$dropdown-link-color: $white;
+$dropdown-link-hover-bg: $primary;
+
+$input-border-color: $dark-grey;
+$input-bg: transparent;
+$input-color: $white;
+
+$list-group-bg: $dark-grey;
+$list-group-color: $white;
+$list-group-action-color: $white;
+$list-group-hover-bg: $primary;
+
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$pagination-bg: $dark-grey;
+$pagination-disabled-bg: $dark-grey;
+$pagination-border-color: $light-grey;
+$pagination-disabled-border-color: $light-grey;
+
+//$card-bg: $theme-colors["dark"];
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "~bootstrap/scss/variables";
+
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+
+// 6. Optionally include any other parts as needed
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/helpers";
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "~bootstrap/scss/utilities/api";
+
