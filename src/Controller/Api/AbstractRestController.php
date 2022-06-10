@@ -23,7 +23,7 @@ abstract class AbstractRestController extends AbstractController
 {
     protected const ITEM_ATTRIBUTES = ['id'];
     protected const LIST_ATTRIBUTES = ['id'];
-    protected const WRITE_ATTRIBUTES = [ ];
+    protected const WRITE_ATTRIBUTES = [];
 
     public function __construct(
         protected RequestStack $requestStack,
