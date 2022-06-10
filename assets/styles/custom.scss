@@ -2,22 +2,25 @@
 // Option B: Include parts of Bootstrap
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-@import "~bootstrap/scss/functions";
+@import '~bootstrap/scss/functions';
 
 // 2. Include any default variable overrides here
 
 $white: #fff;
 $dark: #202124;
-$dark-grey: #3C4042;
+$dark-grey: #3c4042;
 $light-grey: #606368;
-$primary: #BB86FC;
+$primary: #bb86fc;
+$gold: #E0C36B;
 
 $theme-colors: (
-        "dark": $dark,
-        "dark-grey": $dark-grey,
-        "light-grey": $light-grey,
-        "primary": $primary,
-        "danger": #D12836,
+  'dark': $dark,
+  'dark-grey': $dark-grey,
+  'light-grey': $light-grey,
+  'gold': $gold,
+  'primary': $primary,
+  'danger': #dc3545,
+  'success': #198754,
 );
 
 $body-bg: $dark;
@@ -25,14 +28,17 @@ $body-color: $white;
 
 $card-bg: $dark-grey;
 
+$btn-border-radius: 2rem;
+
 $dropdown-bg: $dark-grey;
 $dropdown-color: $white;
 $dropdown-link-color: $white;
 $dropdown-link-hover-bg: $primary;
 
-$input-border-color: $dark-grey;
+$input-border-color: $light-grey;
 $input-bg: transparent;
 $input-color: $white;
+$input-focus-border-color: lighten($light-grey, 15%);
 
 $list-group-bg: $dark-grey;
 $list-group-color: $white;
@@ -47,27 +53,29 @@ $pagination-disabled-bg: $dark-grey;
 $pagination-border-color: $light-grey;
 $pagination-disabled-border-color: $light-grey;
 
+$modal-content-bg: $dark-grey;
+$modal-header-border-width: 0;
+
 //$card-bg: $theme-colors["dark"];
 
 // 3. Include remainder of required Bootstrap stylesheets
-@import "~bootstrap/scss/variables";
+@import '~bootstrap/scss/variables';
 
 // 4. Include any default map overrides here
 
 // 5. Include remainder of required parts
-@import "~bootstrap/scss/maps";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/root";
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
 
 // 6. Optionally include any other parts as needed
-@import "~bootstrap/scss/utilities";
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/images";
-@import "~bootstrap/scss/containers";
-@import "~bootstrap/scss/grid";
-@import "~bootstrap/scss/helpers";
+@import '~bootstrap/scss/utilities';
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/images';
+@import '~bootstrap/scss/containers';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/helpers';
 
 // 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
-@import "~bootstrap/scss/utilities/api";
-
+@import '~bootstrap/scss/utilities/api';

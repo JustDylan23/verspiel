@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Knp\Menu\ItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -18,7 +19,7 @@ final class NovelAdmin extends AbstractAdmin
     {
         $filter
             ->add('title')
-            ->add('description')
+            ->add('featured')
         ;
     }
 
@@ -26,7 +27,8 @@ final class NovelAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('title', fieldDescriptionOptions: ['route' => ['name' => 'edit']])
-            ->add('description')
+            ->add('featured')
+            ->add('shortDescription')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
@@ -42,7 +44,27 @@ final class NovelAdmin extends AbstractAdmin
         $form
             ->tab('General')->with('Main')
             ->add('title')
-            ->add('description')
+            ->add('featured', null, [
+                'label' => 'Featured on homepage',
+            ])
+            ->add('shortDescription', options: [
+                'help' => 'Short description is shown in the list of novels and when searching for novels.',
+            ])
+            ->add('description', CKEditorType::class, [
+                'config' => [
+                    'extraPlugins' => ['autogrow', 'image2'],
+                ],
+                'plugins' => [
+                    'autogrow' => [
+                        'path' => '/ckeditor/plugins/autogrow/', // with trailing slash
+                        'filename' => 'plugin.js',
+                    ],
+                    'image2' => [
+                        'path' => '/ckeditor/plugins/image2/', // with trailing slash
+                        'filename' => 'plugin.js',
+                    ],
+                ]
+            ])
             ->end()->end();
     }
 

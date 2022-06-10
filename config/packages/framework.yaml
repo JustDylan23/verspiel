@@ -20,7 +20,19 @@ framework:
         post_comment:
             policy: 'fixed_window'
             limit: 5
-            interval: '5 minutes'
+            interval: '2 minutes'
+        username_change:
+            policy: 'fixed_window'
+            limit: 5
+            interval: '24 hour'
+        password_reset:
+            policy: 'fixed_window'
+            limit: 3
+            interval: '24 hour'
+        register:
+            policy: 'fixed_window'
+            limit: 2
+            interval: '48 hour'
 
 when@test:
     framework:

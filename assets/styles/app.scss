@@ -1,5 +1,5 @@
-@import "./custom.scss";
-@import "~bootstrap/scss/bootstrap";
+@import './custom.scss';
+@import '~bootstrap/scss/bootstrap';
 /* width */
 ::-webkit-scrollbar {
   width: 12px;
@@ -25,10 +25,10 @@
   display: none;
 }
 
-.form-control, .form-select {
+.form-control,
+.form-select {
   &:focus {
     outline: none !important;
     box-shadow: none !important;
-    border-color: $light-grey;
   }
 }

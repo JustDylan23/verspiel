@@ -72,7 +72,7 @@ class ChapterRepository extends ServiceEntityRepository
             ->andWhere('c.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
         ;
     }
 

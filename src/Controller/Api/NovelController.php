@@ -15,6 +15,7 @@ class NovelController extends AbstractRestController
     public const ITEM_ATTRIBUTES = [
         'id',
         'title',
+        'shortDescription', // used for meta description
         'description',
         'createdAt',
         'chapters' => [
@@ -31,7 +32,7 @@ class NovelController extends AbstractRestController
     public const LIST_ATTRIBUTES = [
         'id',
         'title',
-        'description',
+        'shortDescription',
         'createdAt',
     ];
 

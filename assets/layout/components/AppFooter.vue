@@ -5,10 +5,11 @@
     </div>
     <a
       class="btn text-white-50"
-      href="https://discord.gg/cEB9xWfB"
+      href="https://discord.gg/8URgeTUumB"
       target="_blank"
     >
-      <i class="bi bi-discord me-2" /> Join our discord
+      <i class="bi bi-discord me-2" />
+      Join our discord
     </a>
   </footer>
 </template>

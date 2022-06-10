@@ -8,6 +8,7 @@ use App\Repository\NovelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: NovelRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -21,14 +22,23 @@ class Novel
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
     private $title;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private $shortDescription;
+
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank]
     private $description;
 
     #[ORM\OneToMany(mappedBy: 'novel', targetEntity: Chapter::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['number' => 'DESC'])]
     private $chapters;
+
+    #[ORM\Column(type: 'boolean')]
+    private $featured;
 
     public function __construct()
     {
@@ -45,9 +55,21 @@ class Novel
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(?string $shortDescription): self
+    {
+        $this->shortDescription = $shortDescription;
 
         return $this;
     }
@@ -96,6 +118,18 @@ class Novel
 
     public function __toString(): string
     {
-        return $this->title;
+        return (string)$this->title;
+    }
+
+    public function isFeatured(): ?bool
+    {
+        return $this->featured;
+    }
+
+    public function setFeatured(bool $featured): self
+    {
+        $this->featured = $featured;
+
+        return $this;
     }
 }

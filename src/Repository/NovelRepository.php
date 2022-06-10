@@ -44,9 +44,12 @@ class NovelRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('n')
-            ->orderBy('n.createdAt', 'DESC')
             ->leftJoin('n.chapters', 'c')
-            ->addSelect('c')
+            ->andWhere('n.featured = :featured')
+            ->setParameter('featured', true)
+            ->orderBy('MAX(c.createdAt)', 'DESC')
+            ->setMaxResults(5)
+            ->groupBy('n.id')
             ->getQuery()
             ->getResult()
         ;
@@ -71,7 +74,7 @@ class NovelRepository extends ServiceEntityRepository
             ->andWhere('n.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getSingleResult()
+            ->getOneOrNullResult()
         ;
     }
 }

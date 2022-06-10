@@ -5,8 +5,8 @@ namespace App\Controller\Api;
 use App\Api\ApiPaginator;
 use App\Entity\Comment;
 use App\Repository\CommentRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -59,40 +59,30 @@ class CommentController extends AbstractRestController
     }
 
     #[Route('/comments', methods: ['POST'])]
-    public function postComment(Request $request, RateLimiterFactory $postCommentLimiter ): ConstraintViolationListInterface|array
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
+    #[IsGranted('ROLE_USER')]
+    public function postComment(
+        Request $request,
+        RateLimiterFactory $postCommentLimiter
+    ): ConstraintViolationListInterface|array {
         $limiter = $postCommentLimiter->create($request->getClientIp());
-        if (false === $limiter->consume()->isAccepted()) {
-            throw new TooManyRequestsHttpException(message: 'You are being rate limited, wait 5 minutes before posting again.');
-        }
+        $limiter->consume()->ensureAccepted();
 
         $comment = new Comment();
 
         $this->deserializeRequestContent($comment);
 
-        $violations = $this->getViolations($comment);
-
-        if ($violations->count() > 0) {
-            return $violations;
-        }
+        $this->assertValid($comment);
 
         return $this->viewCreate($comment);
     }
 
     #[Route('/comments/{id<\d+>}', methods: ['DELETE'])]
+    #[IsGranted('ROLE_USER')]
     public function deleteComment(int $id, CommentRepository $commentRepository): ConstraintViolationListInterface|null
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-
         $comment = $commentRepository->find($id);
 
-        $violations = $this->getViolations($comment);
-
-        if ($violations->count() > 0) {
-            return $violations;
-        }
+        $this->assertValid($comment);
 
         $this->viewDelete($comment);
 

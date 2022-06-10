@@ -8,17 +8,24 @@
     >
       <div
         class="d-flex align-items-center justify-content-center"
-        style="width: 60px"
+        style="min-width: 60px"
       >
         <i class="bi bi-bookmark" />
       </div>
-      <div class="flex-grow-1 text-decoration-none d-flex flex-column">
-        <div class="fs-5">
-          {{ chapter.novel.title }}
+      <div class="flex-grow-1" style="min-width: 0">
+        <div class="d-flex">
+          <div class="fs-5 flex-grow-1 text-truncate">
+            {{ chapter.novel.title }} asdfasdfasdfaSF
+          </div>
+          <small class="text-nowrap">
+            {{ formatDateString(chapter.createdAt) }}
+          </small>
         </div>
-        <div>Chapter {{ chapter.number }}</div>
+        <div class="text-truncate">
+          Chapter {{ chapter.number }}
+          {{ chapter.title ? '- ' + chapter.title : '' }}
+        </div>
       </div>
-      <small>{{ formatDateString(chapter.createdAt) }}</small>
     </RouterLink>
   </div>
 </template>

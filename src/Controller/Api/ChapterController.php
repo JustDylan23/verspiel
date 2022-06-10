@@ -21,7 +21,7 @@ class ChapterController extends AbstractRestController
         'novel' => [
             'id',
             'title',
-            'description',
+            'shortDescription',
         ],
         'commentSection' => [
             'id',
@@ -36,7 +36,6 @@ class ChapterController extends AbstractRestController
         'novel' => [
             'id',
             'title',
-            'description',
         ],
     ];
 
@@ -60,7 +59,7 @@ class ChapterController extends AbstractRestController
         $filter->apply($queryBuilder, [
             new StringFilter([
                 'param' => 'title',
-                'field' => 'n.title',
+                'field' => ['c.title', 'c.number', 'n.title'],
             ]),
         ]);
 

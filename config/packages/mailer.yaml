@@ -1,3 +1,7 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: '%env(MAILER_ENVELOPE_SENDER)%'
+        headers:
+            X-Auto-Response-Suppress: 'OOF, DR, RN, NRN, AutoReply'

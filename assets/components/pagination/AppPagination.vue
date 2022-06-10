@@ -24,7 +24,7 @@
       <a class="page-link" href="#">{{ i }}</a>
     </li>
     <li class="page-item" :class="{ disabled: !hasNext }" @click="nextPage">
-      <a class="page-link" href="#"> <i class="bi bi-chevron-right" /></a>
+      <a class="page-link" href="#"><i class="bi bi-chevron-right" /></a>
     </li>
     <li
       class="page-item"

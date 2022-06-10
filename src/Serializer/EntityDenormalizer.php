@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Serializer;
 
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class EntityDenormalizer implements ContextAwareDenormalizerInterface, DenormalizerAwareInterface
+class EntityDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
 
@@ -28,7 +28,9 @@ class EntityDenormalizer implements ContextAwareDenormalizerInterface, Denormali
      */
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
+
         return !isset($context[self::ALREADY_CALLED])
+            && !empty((new \ReflectionClass($type))->getAttributes(Entity::class))
             && is_array($data)
             && !array_diff($this->em->getClassMetadata($type)->getIdentifier(), array_keys($data));
     }

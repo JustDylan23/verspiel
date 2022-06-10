@@ -17,13 +17,17 @@
     class="d-flex align-items-center mb-4 sticky-top py-2 bg-dark border-primary"
     style="top: -1px"
     :class="{ 'border-bottom': isTop }"
+    itemscope
+    itemtype="http://schema.org/Chapter"
   >
     <h3
       class="reader-header flex-grow-1 me-2 text-truncate mb-0"
       :class="{ 'fs-6 top': isTop }"
     >
       Chapter {{ chapter.number }}
-      {{ chapter.title ? '- ' + chapter.title : '' }}
+      <span itemprop="name">
+        {{ chapter.title ? '- ' + chapter.title : '' }}
+      </span>
     </h3>
     <ReaderSettings
       v-model:width="settings.width"
@@ -65,6 +69,7 @@ import ChapterSelector from '@/views/chapter/components/ChapterSelector.vue';
 import ReaderSettings from '@/views/chapter/components/ReaderSettings.vue';
 import { useLocalStorage } from '@vueuse/core';
 import CommentSection from '@/components/comment/CommentSection.vue';
+import { useHead } from '@vueuse/head';
 
 const route = useRoute();
 
@@ -93,6 +98,16 @@ onMounted(() => {
     { threshold: [1] }
   );
   observer.observe(header.value);
+});
+useHead({
+  title:
+    'Chapter ' + chapter.number + ' - ' + chapter.novel.title + ' - Verspiel',
+  meta: [
+    {
+      name: 'description',
+      content: chapter.novel.shortDescription,
+    },
+  ],
 });
 </script>
 

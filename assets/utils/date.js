@@ -7,4 +7,4 @@ TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');
 
 export const formatDateString = (dateString) =>
-  timeAgo.format(new Date(dateString));
+  timeAgo.format(new Date(dateString), 'twitter-now');

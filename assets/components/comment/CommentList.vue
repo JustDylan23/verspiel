@@ -11,10 +11,12 @@
       :id="'comment-' + comment.id"
       :key="comment.id"
       class="mb-4"
+      itemscope
+      itemtype="https://schema.org/Comment"
     >
       <div class="card-header d-flex align-items-start">
         <div>
-          <strong class="me-auto text-truncate">
+          <strong class="me-auto text-truncate" itemprop="author">
             {{ comment.author.username }}
           </strong>
           <small
@@ -25,7 +27,7 @@
             admin
           </small>
         </div>
-        <small class="text-nowrap ms-auto">
+        <small class="text-nowrap ms-auto" itemprop="dateCreated">
           {{ formatDateString(comment.createdAt) }}
         </small>
       </div>
@@ -34,6 +36,7 @@
           :id="'content-' + comment.id"
           class="text-break overflow-hidden comment-content"
           :class="{ collapsed: !comment.expanded }"
+          itemprop="text"
         >
           {{ comment.content }}
         </div>
@@ -55,7 +58,8 @@
             class="text-white-50 me-2"
             data-bs-toggle="collapse"
           >
-            Reply <i class="bi bi-reply"></i>
+            Reply
+            <i class="bi bi-reply"></i>
           </a>
           <a
             v-if="comment.replyCount > 0 && depth < 3"
@@ -127,7 +131,7 @@ import ReplyField from '@/components/comment/ReplyField.vue';
 import { formatDateString } from '@/utils/date';
 import replyBus from '@/components/comment/replyBus.js';
 import { useDebounceFn } from '@vueuse/core';
-import useSecurity from '@/state/security.js';
+import { useSecurity } from '@/state/security';
 
 const props = defineProps({
   commentSection: {

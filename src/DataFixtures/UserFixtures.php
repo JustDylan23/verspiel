@@ -24,6 +24,7 @@ class UserFixtures extends Fixture
         $user->setEmail('test_user@mail.com');
         $user->setUsername('test_user');
         $user->setPassword($this->passwordHasher->hashPassword($user, 'test_user'));
+        $user->setVerified(true);
         $manager->persist($user);
         $this->setReference(UserFixtures::USER_NORMAL, $user);
 
@@ -32,6 +33,7 @@ class UserFixtures extends Fixture
         $user->setUsername('test_admin');
         $user->setPassword($this->passwordHasher->hashPassword($user, 'test_admin'));
         $user->setRoles(['ROLE_SUPER_ADMIN']);
+        $user->setVerified(true);
         $manager->persist($user);
         $this->setReference(UserFixtures::USER_ADMIN, $user);
 

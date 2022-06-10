@@ -32,7 +32,7 @@ const clearSession = () => {
   localStorage.removeItem('auth');
 };
 
-const useSecurity = () => {
+export const useSecurity = () => {
   return {
     user,
     isAuthenticated,
@@ -42,5 +42,3 @@ const useSecurity = () => {
     refreshUser,
   };
 };
-
-export default useSecurity;

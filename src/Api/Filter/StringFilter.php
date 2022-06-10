@@ -14,9 +14,10 @@ class StringFilter extends AbstractApiFilter
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
         $resolver->setDefault('type', 'contains');
         $resolver->setAllowedValues('type', ['exact', 'contains']);
-        parent::configureOptions($resolver);
+        $resolver->setAllowedTypes('field', ['string', 'array']);
     }
 
     public function getValue(Request $request)
@@ -28,16 +29,17 @@ class StringFilter extends AbstractApiFilter
 
     function apply(QueryBuilder $queryBuilder, mixed $value, string $uniqueParameterAlias): void
     {
-        if ('contains' === $this->options['type']) {
-            $queryBuilder
-                ->andWhere("{$this->options['field']} LIKE :{$uniqueParameterAlias}")
-                ->setParameter($uniqueParameterAlias, '%'.addcslashes($value, '%_').'%')
-            ;
-        } elseif ('exact' === $this->options['type']) {
-            $queryBuilder
-                ->andWhere("{$this->options['field']} = :{$uniqueParameterAlias}")
-                ->setParameter($uniqueParameterAlias, $value)
-            ;
+        $operator = $this->options['type'] === 'exact' ? '=' : 'LIKE';
+        if (is_scalar($this->options['field'])) {
+            $queryBuilder->andWhere("{$this->options['field']} {$operator} :{$uniqueParameterAlias}");
+        } else if (is_array($this->options['field'])) {
+            $queryBuilder->andWhere(implode(' OR ', array_map(
+                fn($field) => "{$field} {$operator} :{$uniqueParameterAlias}",
+                $this->options['field']
+            )));
         }
+        $queryBuilder
+            ->setParameter($uniqueParameterAlias, '%'.addcslashes($value, '%_').'%')
+        ;
     }
 }

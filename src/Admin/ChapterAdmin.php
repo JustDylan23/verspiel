@@ -32,7 +32,7 @@ final class ChapterAdmin extends AbstractAdmin
         ;
 
         if (!$this->isChild()) {
-            $list->add('novel',  fieldDescriptionOptions: ['route' => ['name' => 'edit']]);
+            $list->add('novel', fieldDescriptionOptions: ['route' => ['name' => 'edit']]);
         } else {
             $list
                 ->add('createdAt')
@@ -60,11 +60,11 @@ final class ChapterAdmin extends AbstractAdmin
                 ],
                 'plugins' => [
                     'autogrow' => [
-                        'path'     => '/ckeditor/plugins/autogrow/', // with trailing slash
+                        'path' => '/ckeditor/plugins/autogrow/', // with trailing slash
                         'filename' => 'plugin.js',
                     ],
                     'image2' => [
-                        'path'     => '/ckeditor/plugins/image2/', // with trailing slash
+                        'path' => '/ckeditor/plugins/image2/', // with trailing slash
                         'filename' => 'plugin.js',
                     ],
                 ]

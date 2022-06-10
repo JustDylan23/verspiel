@@ -6,13 +6,14 @@ namespace App\Serializer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class SingleIdentifierEntityDenormalizer implements ContextAwareDenormalizerInterface, DenormalizerAwareInterface
+class SingleIdentifierEntityDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
 
@@ -28,7 +29,10 @@ class SingleIdentifierEntityDenormalizer implements ContextAwareDenormalizerInte
      */
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
-        return !isset($context[self::ALREADY_CALLED]) && !is_array($data) && !empty($this->em->getClassMetadata($type)->getSingleIdentifierFieldName());
+        return !isset($context[self::ALREADY_CALLED])
+            && !empty((new \ReflectionClass($type))->getAttributes(Entity::class))
+            && !is_array($data)
+            && !empty($this->em->getClassMetadata($type)->getSingleIdentifierFieldName());
     }
 
     /**

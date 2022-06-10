@@ -6,7 +6,8 @@
       :to="{ name: 'browse', params: { type: 'chapters' } }"
       class="mt-2 d-block"
     >
-      View all <i class="bi bi-chevron-right"></i>
+      View all
+      <i class="bi bi-chevron-right"></i>
     </RouterLink>
   </div>
 </template>

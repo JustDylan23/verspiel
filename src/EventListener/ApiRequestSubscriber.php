@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Validator\InvalidEntityException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\RateLimiter\Exception\RateLimitExceededException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
@@ -53,13 +56,13 @@ class ApiRequestSubscriber implements EventSubscriberInterface
                 $errors[$violation->getPropertyPath()][] = $violation->getMessage();
             }
 
-            return new JsonResponse(['status' => 'error', 'data' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['status' => 'error', 'data' => $errors, 'message' => Response::$statusTexts[Response::HTTP_UNPROCESSABLE_ENTITY]], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $response = new JsonResponse($controllerResult);
         match ($event->getRequest()->getMethod()) {
-            'POST' => $response->setStatusCode(Response::HTTP_CREATED),
-            'DELETE' => $response->setStatusCode(Response::HTTP_NO_CONTENT),
+            Request::METHOD_POST => $response->setStatusCode(Response::HTTP_CREATED),
+            Request::METHOD_DELETE => $response->setStatusCode(Response::HTTP_NO_CONTENT),
             default => null,
         };
 
@@ -78,11 +81,22 @@ class ApiRequestSubscriber implements EventSubscriberInterface
             $content['message'] = Response::$statusTexts[$status];
             $event->stopPropagation();
         } else {
-            if ($throwable instanceof HttpException) {
+            if ($throwable instanceof InvalidEntityException) {
+                $status = Response::HTTP_UNPROCESSABLE_ENTITY;
+                $errors = [];
+                foreach ($throwable->getViolations() as $violation) {
+                    $errors[$violation->getPropertyPath()][] = $violation->getMessage();
+                }
+                $content['message'] = $throwable->getMessage();
+                $content['data'] = $errors;
+            } elseif ($throwable instanceof HttpException) {
                 $status = $throwable->getStatusCode();
                 $content['message'] = $throwable->getMessage();
+            } elseif ($throwable instanceof RateLimitExceededException) {
+                $status = Response::HTTP_TOO_MANY_REQUESTS;
+                $content['message'] = Response::$statusTexts[Response::HTTP_TOO_MANY_REQUESTS];
             } else {
-                $status = 500;
+                $status = Response::HTTP_INTERNAL_SERVER_ERROR;
                 $content['message'] = Response::$statusTexts[500];
                 if ('dev' === $this->kernel->getEnvironment()) {
                     if ('application/json' !== $event->getRequest()->getContentType()) {

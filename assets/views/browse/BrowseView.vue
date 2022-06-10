@@ -40,8 +40,14 @@ import {
 import { reactive, ref } from 'vue';
 import { onStartTyping } from '@vueuse/core';
 import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head';
 
 const route = useRoute();
+
+useHead({
+  title: 'Browse ' + route.params.type.toLowerCase() + ' - Verspiel',
+});
+
 const resultComponent =
   route.params.type === 'novels' ? NovelList : ChapterList;
 

@@ -20,6 +20,7 @@ security:
                 interval: '10 minutes'
             json_login:
                 check_path: api_login
+            user_checker: App\Security\UserChecker
             logout:
                 path: app_logout
                 # where to redirect after logout

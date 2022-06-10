@@ -13,10 +13,10 @@
         <i class="bi bi-book" />
       </div>
       <div class="flex-grow-1 text-decoration-none d-flex flex-column">
-        <h5 class="mb-1 text-truncate">
+        <div class="fs-5 text-truncate">
           {{ novel.title }}
-        </h5>
-        <small class="text-truncate">{{ novel.description }}</small>
+        </div>
+        <small class="text-truncate">{{ novel.shortDescription }}</small>
       </div>
       <small>{{ formatDateString(novel.createdAt) }}</small>
     </RouterLink>

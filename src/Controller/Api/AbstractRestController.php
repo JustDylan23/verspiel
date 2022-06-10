@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Validator\InvalidEntityException;
 use Doctrine\DBAL\Exception\ConstraintViolationException;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -86,15 +86,17 @@ abstract class AbstractRestController extends AbstractController
         $this->entityManager->flush();
     }
 
-    protected function deserializeRequestContent(object $object)
+    protected function deserializeRequestContent(object $object, array $attributes = null)
     {
+
+
         try {
             return $this->serializer->deserialize(
                 $this->requestStack->getCurrentRequest()->getContent(),
                 $object::class,
                 'json',
                 [
-                    'attributes' => static::WRITE_ATTRIBUTES,
+                    'attributes' => empty((new \ReflectionClass($object))->getAttributes(Entity::class)) ? null : $attributes ?? static::WRITE_ATTRIBUTES,
                     AbstractNormalizer::OBJECT_TO_POPULATE => $object,
                 ]
             );
@@ -106,5 +108,13 @@ abstract class AbstractRestController extends AbstractController
     protected function getViolations($data): ConstraintViolationListInterface
     {
         return $this->validator->validate($data);
+    }
+
+    protected function assertValid($data): void
+    {
+        $violations = $this->validator->validate($data);
+        if ($violations->count() > 0) {
+            throw new InvalidEntityException($violations);
+        }
     }
 }

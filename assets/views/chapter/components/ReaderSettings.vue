@@ -22,9 +22,7 @@
       <li><hr class="dropdown-divider" /></li>
       <div class="p-3">
         <div class="mb-2">
-          <label for="widthModel" class="form-label">
-            Width: {{ width }}%
-          </label>
+          <label for="widthModel" class="form-label">Width: {{ width }}%</label>
           <input
             id="widthModel"
             v-model="widthModel"

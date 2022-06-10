@@ -3,37 +3,37 @@
     class="navbar navbar-expand navbar-dark mb-3 border-bottom border-primary"
   >
     <div class="container">
-      <RouterLink class="navbar-brand me-auto" :to="{ name: 'home' }">
-        <div
-          style="width: 30px; height: 24px"
-          class="d-inline-block align-text-top bg-primary rounded-3"
-        />
-        Verspiel
+      <RouterLink
+        class="navbar-brand me-auto position-relative"
+        z
+        :to="{ name: 'home' }"
+      >
+        <img src="/favicon-32x32.png" height="32" width="32" />
+        <span class="position-absolute" style="left: 32px; top: 10px">
+          erspiel
+        </span>
       </RouterLink>
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
           <a
-            id="navbarDropdown"
             class="nav-link dropdown-toggle"
             href="#"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            :class="{ abcd: $route.name === 'browse' }"
           >
             Browse
           </a>
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="navbarDropdown"
-            style="z-index: 1200"
-          >
+          <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1200">
             <li>
               <RouterLink
                 class="dropdown-item"
                 :to="{ name: 'browse', params: { type: 'novels' } }"
                 active-class="active"
               >
-                <i class="bi bi-book me-2"></i> Novels
+                <i class="bi bi-book me-2"></i>
+                Novels
               </RouterLink>
             </li>
             <li>
@@ -42,7 +42,8 @@
                 :to="{ name: 'browse', params: { type: 'chapters' } }"
                 active-class="active"
               >
-                <i class="bi bi-bookmark me-2"></i> Chapters
+                <i class="bi bi-bookmark me-2"></i>
+                Chapters
               </RouterLink>
             </li>
           </ul>
@@ -58,7 +59,7 @@
 
 <script setup>
 import AppLogin from '@/layout/components/AppLogin.vue';
-import useSecurity from '@/state/security';
+import { useSecurity } from '@/state/security';
 import AppDropdown from '@/layout/components/AppDropdown.vue';
 
 const { isAuthenticated } = useSecurity();

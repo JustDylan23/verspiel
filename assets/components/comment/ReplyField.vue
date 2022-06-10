@@ -1,6 +1,6 @@
 <template>
   <div class="reply-field mt-2">
-    <small v-if="!isAuthenticated" class="text-white-50 fst-italic">
+    <small v-if="!isAuthenticated" class="text-white-50">
       Log in to leave comments
     </small>
     <div v-else class="position-relative">
@@ -20,16 +20,17 @@
         :disabled="isSubmitting"
         @click="send"
       >
-        <i class="bi bi-send" /> Send
+        <i class="bi bi-send" />
+        Send
       </button>
     </div>
-    <small class="text-danger fst-italic">{{ error }}</small>
+    <small class="text-danger">{{ error }}</small>
   </div>
 </template>
 
 <script setup>
 import { computed, reactive, ref } from 'vue';
-import useSecurity from '@/state/security.js';
+import { useSecurity } from '@/state/security';
 import axios from 'axios';
 import replyBus from '@/components/comment/replyBus.js';
 

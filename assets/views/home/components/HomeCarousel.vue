@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="latestNovels.length !== 0">
     <h3>Featured novels</h3>
     <div
       id="carouselExampleDark"
@@ -30,12 +30,17 @@
             src="https://media.discordapp.net/attachments/978050895910686731/979458260543373352/post_test_6.png?width=1920&height=540"
             class="d-block w-100"
             style="filter: blur(5px)"
-            alt="..."
+            alt="slide background"
           />
-          <div class="carousel-caption d-none d-md-block">
-            <h5>{{ latestNovels[0].title }}</h5>
-            <p>{{ latestNovels[0].description }}</p>
-          </div>
+          <RouterLink
+            :to="{ name: 'novel', params: { id: latestNovels[0].id } }"
+            class="carousel-caption text-white"
+          >
+            <h5 class="text-truncate">{{ latestNovels[0].title }}</h5>
+            <p class="d-none d-md-block">
+              {{ latestNovels[0].shortDescription }}
+            </p>
+          </RouterLink>
         </div>
         <div
           v-for="novel in latestNovels.slice(1)"
@@ -46,12 +51,15 @@
             src="https://media.discordapp.net/attachments/978050895910686731/979458260543373352/post_test_6.png?width=1920&height=540"
             class="d-block w-100"
             style="filter: blur(5px)"
-            alt="..."
+            alt="slide background"
           />
-          <div class="carousel-caption d-none d-md-block">
-            <h5>{{ novel.title }}</h5>
-            <p>{{ novel.description }}</p>
-          </div>
+          <RouterLink
+            :to="{ name: 'novel', params: { id: novel.id } }"
+            class="carousel-caption text-white"
+          >
+            <h5 class="text-truncate">{{ novel.title }}</h5>
+            <p class="d-none d-md-block">{{ novel.shortDescription }}</p>
+          </RouterLink>
         </div>
       </div>
       <button
