@@ -78,9 +78,6 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "heroku-postbuild": [
-            "yarn build"
         ]
     },
     "conflict": {
