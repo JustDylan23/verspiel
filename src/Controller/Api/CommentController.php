@@ -18,7 +18,7 @@ class CommentController extends AbstractRestController
         'author' => [
             'id',
             'username',
-            'isAdmin',
+            'badges',
         ],
         'content',
         'replyCount',

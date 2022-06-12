@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class OwnerValidator extends ConstraintValidator
+class CommentOwnerValidator extends ConstraintValidator
 {
     public function __construct(private readonly Security $security)
     {
@@ -15,15 +15,15 @@ class OwnerValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof Owner) {
-            throw new UnexpectedTypeException($constraint, Owner::class);
+        if (!$constraint instanceof CommentOwner) {
+            throw new UnexpectedTypeException($constraint, CommentOwner::class);
         }
 
         if (null === $value || '' === $value) {
             return;
         }
 
-        if ($this->security->getUser() !== $value) {
+        if ($this->security->getUser() !== $value && !$this->security->isGranted('ROLE_MODERATOR')) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }

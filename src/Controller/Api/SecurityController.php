@@ -16,7 +16,7 @@ class SecurityController extends AbstractRestController
         'id',
         'username',
         'email',
-        'isAdmin'
+        'badges',
     ];
 
     #[Route('/login', name: 'api_login', methods: ['POST'])]

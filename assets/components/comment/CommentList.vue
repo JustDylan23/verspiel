@@ -20,11 +20,12 @@
             {{ comment.author.username }}
           </strong>
           <small
-            v-if="comment.author.isAdmin"
+            v-for="(badge, key) in comment.author.badges"
+            :key="key"
             class="badge bg-primary text-black rounded-pill ms-2"
             style="font-size: 0.7rem"
           >
-            admin
+            {{ badge }}
           </small>
         </div>
         <small class="text-nowrap ms-auto" itemprop="dateCreated">

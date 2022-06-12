@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 final class NovelAdmin extends AbstractAdmin
@@ -95,5 +96,10 @@ final class NovelAdmin extends AbstractAdmin
             ->add('description')
             ->add('chapters')
             ->end()->end();
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->remove('export');
     }
 }

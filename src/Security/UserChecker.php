@@ -20,6 +20,10 @@ class UserChecker implements UserCheckerInterface
         if (!$user->isVerified()) {
             throw new CustomUserMessageAccountStatusException('Your account is not verified. Please check your email.');
         }
+
+        if ($user->isDisabled()) {
+            throw new CustomUserMessageAccountStatusException('Your account has been disabled.');
+        }
     }
 
     public function checkPostAuth(UserInterface $user): void

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
-class Owner extends Constraint
+class CommentOwner extends Constraint
 {
     /*
      * Any public properties become valid options for the annotation.

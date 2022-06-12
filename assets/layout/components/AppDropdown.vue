@@ -20,7 +20,11 @@
       </RouterLink>
     </li>
     <li>
-      <a v-if="user.isAdmin" class="dropdown-item" href="/admin/dashboard">
+      <a
+        v-if="user.badges.includes('Admin') || user.badges.includes('Editor')"
+        class="dropdown-item"
+        href="/admin/dashboard"
+      >
         <i class="bi bi-person-lines-fill me-2" />
         Admin
       </a>

@@ -29,6 +29,7 @@ services:
         tags:
             - { name: sonata.admin.extension, target: admin.novel }
             - { name: sonata.admin.extension, target: admin.chapter }
+            - { name: sonata.admin.extension, target: admin.user }
 
     admin.novel:
         class: App\Admin\NovelAdmin
@@ -41,3 +42,8 @@ services:
         class: App\Admin\ChapterAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\Chapter, controller: ~, manager_type: orm, group: Content, label: Chapter }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: Users, label: User }

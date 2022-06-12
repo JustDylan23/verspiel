@@ -8,7 +8,6 @@ use App\Entity\DTO\EmailDTO;
 use App\Entity\DTO\PasswordResetDTO;
 use App\Manager\UserMailer;
 use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;

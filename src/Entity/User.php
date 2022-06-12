@@ -8,14 +8,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'This email is already in use.')]
 #[UniqueEntity(fields: ['username'], message: 'This username is already taken.')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     use TimestampableTrait;
 
@@ -25,9 +27,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
     private $email;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank]
     private $username;
 
     #[ORM\Column(type: 'json')]
@@ -35,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private $password;
+
+    #[Assert\Length(min: 6)]
+    public $plainPassword;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class, orphanRemoval: true)]
     private $comments;
@@ -51,6 +58,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $passwordResetTokenDate;
 
+    #[ORM\Column(type: 'boolean')]
+    private $disabled;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -66,7 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -78,7 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -107,12 +117,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function getIsAdmin(): bool
+    public function isPrivileged(): bool
     {
-        return in_array('ROLE_ADMIN', $this->roles, true) || in_array('ROLE_SUPER_ADMIN', $this->roles, true);
+        return count($this->getRoles()) > 1;
     }
 
-    public function setRoles(array $roles): self
+    public function getBadges(): array
+    {
+        $roles = [];
+        if (in_array('ROLE_SUPER_ADMIN', $this->roles, true)) {
+            $roles[] = 'Admin';
+        }
+        if (in_array('ROLE_EDITOR', $this->roles, true)) {
+            $roles[] = 'Editor';
+        }
+        if (in_array('ROLE_MODERATOR', $this->roles, true)) {
+            $roles[] = 'Moderator';
+        }
+        return $roles;
+    }
+
+    public function setRoles($roles): self
     {
         $this->roles = $roles;
 
@@ -127,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
@@ -143,7 +168,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
     public function __toString(): string
@@ -225,5 +250,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isPasswordResetTokenExpired(): bool
     {
         return $this->passwordResetTokenDate < new \DateTime('-10 minutes');
+    }
+
+    public function isDisabled(): ?bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): self
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    /**
+     * @param self $user
+     */
+    public function isEqualTo(UserInterface $user): bool
+    {
+        return $user->password === $this->password && !$user->disabled;
     }
 }

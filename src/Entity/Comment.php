@@ -38,7 +38,7 @@ class Comment
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
-    #[AppAssert\Owner]
+    #[AppAssert\CommentOwner]
     private $author;
 
     public function __construct()
@@ -63,7 +63,7 @@ class Comment
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
@@ -102,6 +102,7 @@ class Comment
         return $this->replies;
     }
 
+    /** Field is made at runtime */
     public function getReplyCount(): int
     {
         return $this->replyCount;
