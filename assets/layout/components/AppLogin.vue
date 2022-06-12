@@ -8,7 +8,10 @@
   >
     Login
   </a>
-  <div class="dropdown-menu dropdown-menu-end" style="z-index: 1200">
+  <div
+    class="dropdown-menu dropdown-menu-end"
+    style="z-index: 1200; min-width: 200px"
+  >
     <form
       class="px-4 py-3"
       autocomplete="off"
@@ -51,13 +54,14 @@
         {{ error }}
       </div>
     </form>
-    <div class="dropdown-divider" />
-    <RouterLink class="dropdown-item" :to="{ name: 'register' }">
-      New around here? Sign up
-    </RouterLink>
-    <RouterLink class="dropdown-item" :to="{ name: 'password-reset-request' }">
-      Forgot password?
-    </RouterLink>
+    <!-- NEXT_RELEASE: uncomment -->
+    <!--    <div class="dropdown-divider" />-->
+    <!--    <RouterLink class="dropdown-item" :to="{ name: 'register' }">-->
+    <!--      New around here? Sign up-->
+    <!--    </RouterLink>-->
+    <!--    <RouterLink class="dropdown-item" :to="{ name: 'password-reset-request' }">-->
+    <!--      Forgot password?-->
+    <!--    </RouterLink>-->
   </div>
 </template>
 

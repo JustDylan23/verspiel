@@ -27,7 +27,7 @@
       <div class="carousel-inner rounded-3">
         <div class="carousel-item active">
           <img
-            src="https://media.discordapp.net/attachments/978050895910686731/979458260543373352/post_test_6.png?width=1920&height=540"
+            src="https://media.discordapp.net/attachments/978050895910686731/985399366296678480/IMG_3498.png?width=1440&height=405"
             class="d-block w-100"
             style="filter: blur(5px)"
             alt="slide background"
@@ -48,7 +48,7 @@
           class="carousel-item"
         >
           <img
-            src="https://media.discordapp.net/attachments/978050895910686731/979458260543373352/post_test_6.png?width=1920&height=540"
+            src="https://media.discordapp.net/attachments/978050895910686731/985399366296678480/IMG_3498.png?width=1440&height=405"
             class="d-block w-100"
             style="filter: blur(5px)"
             alt="slide background"

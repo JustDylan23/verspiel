@@ -21,23 +21,23 @@
       Save
     </button>
   </form>
-  <button
-    class="btn btn-light-grey"
-    :disabled="isResetting"
-    @click="resetPassword"
-  >
-    Request password reset
-  </button>
+  <!-- NEXT_RELEASE: uncomment -->
+  <!--  <button-->
+  <!--    class="btn btn-light-grey"-->
+  <!--    :disabled="isResetting"-->
+  <!--    @click="resetPassword"-->
+  <!--  >-->
+  <!--    Request password reset-->
+  <!--  </button>-->
 </template>
 
 <script setup>
 import { useSecurity } from '@/state/security';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import FormFeedback from '@/components/form/FormFeedback.vue';
 import { useToast } from '@/utils/notification.js';
 import { useHead } from '@vueuse/head';
 import { submitForm } from '@/utils/form.js';
-import axios from 'axios';
 
 const { user } = useSecurity();
 const { toast } = useToast();
@@ -55,21 +55,22 @@ const profile = reactive({
   },
 });
 
-const isResetting = ref(false);
-const resetPassword = async () => {
-  if (isResetting.value) {
-    return;
-  }
-  isResetting.value = true;
-  try {
-    await axios.post('/api/password-reset/request', {
-      email: user.value.email,
-    });
-    toast('Password reset request sent');
-  } catch (error) {
-    // ignored
-  }
-};
+// NEXT_RELEASE: uncomment
+// const isResetting = ref(false);
+// const resetPassword = async () => {
+//   if (isResetting.value) {
+//     return;
+//   }
+//   isResetting.value = true;
+//   try {
+//     await axios.post('/api/password-reset/request', {
+//       email: user.value.email,
+//     });
+//     toast('Password reset request sent');
+//   } catch (error) {
+//     // ignored
+//   }
+// };
 
 useHead({
   title: 'Profile - Verspiel',
