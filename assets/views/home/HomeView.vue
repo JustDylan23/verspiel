@@ -13,7 +13,8 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'Verspiel is a web novel site',
+      content:
+        'Verspiel is your next platform for reading web novels. Sign up now for access to commenting and join the community. Don’t forget to join the Discord for discussions.',
     },
   ],
 });
