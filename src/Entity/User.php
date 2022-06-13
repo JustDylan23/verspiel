@@ -126,13 +126,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     {
         $roles = [];
         if (in_array('ROLE_SUPER_ADMIN', $this->roles, true)) {
-            $roles[] = 'Admin';
+            $roles[] = 'admin';
         }
         if (in_array('ROLE_EDITOR', $this->roles, true)) {
-            $roles[] = 'Editor';
+            $roles[] = 'editor';
         }
         if (in_array('ROLE_MODERATOR', $this->roles, true)) {
-            $roles[] = 'Moderator';
+            $roles[] = 'mod';
         }
         return $roles;
     }

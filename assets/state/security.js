@@ -32,6 +32,14 @@ const clearSession = () => {
   localStorage.removeItem('auth');
 };
 
+const isAdmin = computed(
+  () => isAuthenticated.value && user.value.badges.includes('admin')
+);
+const isCommentMod = computed(
+  () => user.value !== null && user.value.badges.includes('moderator')
+);
+const canDeleteComments = computed(() => isAdmin.value || isCommentMod.value);
+
 export const useSecurity = () => {
   return {
     user,
@@ -40,5 +48,6 @@ export const useSecurity = () => {
     logout,
     hasSession,
     refreshUser,
+    canDeleteComments,
   };
 };

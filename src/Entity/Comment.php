@@ -21,8 +21,9 @@ class Comment
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[Assert\Length(max: 500)]
     private $content;
 
     #[ORM\ManyToOne(targetEntity: CommentSection::class, inversedBy: 'comments')]
@@ -32,7 +33,7 @@ class Comment
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'replies')]
     private $replyTo;
 
-    #[ORM\OneToMany(mappedBy: 'replyTo', targetEntity: self::class)]
+    #[ORM\OneToMany(mappedBy: 'replyTo', targetEntity: self::class, orphanRemoval: true)]
     private $replies;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]

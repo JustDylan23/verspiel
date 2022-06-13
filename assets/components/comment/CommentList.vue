@@ -7,7 +7,7 @@
   />
   <div ref="commentList" class="comment-list">
     <div
-      v-for="comment in comments"
+      v-for="(comment, key) in comments"
       :id="'comment-' + comment.id"
       :key="comment.id"
       class="mb-4"
@@ -15,18 +15,18 @@
       itemtype="https://schema.org/Comment"
     >
       <div class="card-header d-flex align-items-start">
-        <div>
-          <strong class="me-auto text-truncate" itemprop="author">
+        <div class="flex-grow-1 d-flex" style="min-width: 0">
+          <strong class="flex-shrink-1 text-truncate me-2" itemprop="author">
             {{ comment.author.username }}
           </strong>
-          <small
+          <span
             v-for="(badge, key) in comment.author.badges"
             :key="key"
-            class="badge bg-primary text-black rounded-pill ms-2"
-            style="font-size: 0.7rem"
+            class="badge bg-primary text-black rounded-pill me-2 text-capitalize"
+            style="font-size: 0.7rem; line-height: 1rem"
           >
             {{ badge }}
-          </small>
+          </span>
         </div>
         <small class="text-nowrap ms-auto" itemprop="dateCreated">
           {{ formatDateString(comment.createdAt) }}
@@ -41,15 +41,14 @@
         >
           {{ comment.content }}
         </div>
-        <div>
+        <div class="d-flex flex-wrap">
           <a
             v-if="comment.isCollapsed"
-            class="text-white-50 me-1"
+            class="text-white-50 me-2"
             @click="comment.expanded = !comment.expanded"
           >
             Read {{ comment.expanded ? 'less' : 'more' }}
             <i
-              class="bi bi-chevron-down"
               :class="comment.expanded ? 'bi-chevron-up' : 'bi-chevron-down'"
             />
           </a>
@@ -65,6 +64,7 @@
           <a
             v-if="comment.replyCount > 0 && depth < 3"
             href="#"
+            class="me-2"
             @click.prevent="comment.open = !comment.open"
           >
             {{
@@ -72,10 +72,15 @@
                 ? 'View ' + comment.replyCount + ' responses'
                 : 'View response'
             }}
-            <i
-              class="bi bi-chevron-down"
-              :class="comment.open ? 'bi-chevron-up' : 'bi-chevron-down'"
-            />
+            <i :class="comment.open ? 'bi-chevron-up' : 'bi-chevron-down'" />
+          </a>
+          <a
+            v-if="canDeleteComments"
+            class="text-danger"
+            @click="deleteComment(comment, key)"
+          >
+            Delete
+            <i class="bi bi-trash" />
           </a>
         </div>
         <div :id="'reply-' + comment.id" class="collapse">
@@ -94,6 +99,7 @@
               :reply-to="comment.id"
               :total-replies="comment.replyCount"
               :depth="depth + 1"
+              @remove="comment.replyCount--"
             />
             <template #fallback>
               <div>
@@ -134,6 +140,8 @@ import replyBus from '@/components/comment/replyBus.js';
 import { useDebounceFn } from '@vueuse/core';
 import { useSecurity } from '@/state/security';
 
+const emit = defineEmits(['remove']);
+
 const props = defineProps({
   commentSection: {
     type: Number,
@@ -156,7 +164,7 @@ const props = defineProps({
   },
 });
 
-const { isAuthenticated } = useSecurity();
+const { isAuthenticated, canDeleteComments } = useSecurity();
 
 const reactions = ref();
 
@@ -215,6 +223,14 @@ if (props.replyTo) {
   replyBus.on(props.replyTo, addComment);
 }
 
+const deleteComment = async (comment, index) => {
+  if (confirm('Are you sure you want to delete this comment?')) {
+    await axios.delete('/api/comments/' + comment.id);
+    emit('remove');
+    comments.splice(index, 1);
+  }
+};
+
 const onLoadMore = async () => {
   if (isLoading.value === true || cursor.value === null) {
     return;
@@ -239,6 +255,7 @@ const onLoadMore = async () => {
 <style lang="scss">
 .comment-content {
   white-space: pre-wrap;
+
   &.collapsed {
     display: -webkit-box;
     -webkit-line-clamp: 3;
