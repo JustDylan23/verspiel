@@ -6,7 +6,9 @@ namespace App\Manager;
 
 use App\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 class UserMailer
 {
@@ -26,7 +28,7 @@ class UserMailer
             ])
         ;
 
-        $this->mailer->send($email);
+        $this->send($email);
     }
 
     public function sendPasswordResetEmail(User $user): void
@@ -40,6 +42,15 @@ class UserMailer
             ])
         ;
 
-        $this->mailer->send($email);
+        $this->send($email);
+    }
+
+    private function send($email): void
+    {
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface) {
+            throw new BadRequestHttpException('Failed to send email');
+        }
     }
 }

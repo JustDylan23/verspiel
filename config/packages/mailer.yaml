@@ -4,4 +4,5 @@ framework:
         envelope:
             sender: '%env(MAILER_ENVELOPE_SENDER)%'
         headers:
+            From: 'Verspiel <%env(MAILER_ENVELOPE_SENDER)%>'
             X-Auto-Response-Suppress: 'OOF, DR, RN, NRN, AutoReply'

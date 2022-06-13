@@ -9,20 +9,19 @@ const router = createRouter({
       name: 'home',
       component: () => import('@/views/home/HomeView.vue'),
     },
-    // NEXT_RELEASE: uncomment
-    // {
-    //   path: '/register',
-    //   name: 'register',
-    //   component: () => import('@/views/register/RegisterView.vue'),
-    // },
-    // {
-    //   path: '/registration/completed',
-    //   name: 'registration-completed',
-    //   component: () => import('@/views/register/RegistrationCompletedView.vue'),
-    //   meta: {
-    //     auth: false,
-    //   },
-    // },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('@/views/register/RegisterView.vue'),
+    },
+    {
+      path: '/registration/completed',
+      name: 'registration-completed',
+      component: () => import('@/views/register/RegistrationCompletedView.vue'),
+      meta: {
+        auth: false,
+      },
+    },
     {
       path: '/profile',
       name: 'profile',
@@ -31,19 +30,18 @@ const router = createRouter({
         auth: true,
       },
     },
-    // NEXT_RELEASE: uncomment
-    // {
-    //   path: '/password-reset/request',
-    //   name: 'password-reset-request',
-    //   component: () =>
-    //     import('@/views/password-reset/PasswordResetRequestView.vue'),
-    // },
-    // {
-    //   path: '/password-reset/complete/:token',
-    //   name: 'password-reset-complete',
-    //   component: () =>
-    //     import('@/views/password-reset/PasswordResetCompleteView.vue'),
-    // },
+    {
+      path: '/password-reset/request',
+      name: 'password-reset-request',
+      component: () =>
+        import('@/views/password-reset/PasswordResetRequestView.vue'),
+    },
+    {
+      path: '/password-reset/complete/:token',
+      name: 'password-reset-complete',
+      component: () =>
+        import('@/views/password-reset/PasswordResetCompleteView.vue'),
+    },
     {
       path: '/novel/:id(\\d+)',
       name: 'novel',

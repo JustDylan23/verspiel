@@ -34,7 +34,3 @@ services:
             - '80:80'
         volumes:
             - './:/var/www/symfony:cached'
-    mailer:
-        image: schickling/mailcatcher
-        ports: [1025, 1080]
-

@@ -54,14 +54,13 @@
         {{ error }}
       </div>
     </form>
-    <!-- NEXT_RELEASE: uncomment -->
-    <!--    <div class="dropdown-divider" />-->
-    <!--    <RouterLink class="dropdown-item" :to="{ name: 'register' }">-->
-    <!--      New around here? Sign up-->
-    <!--    </RouterLink>-->
-    <!--    <RouterLink class="dropdown-item" :to="{ name: 'password-reset-request' }">-->
-    <!--      Forgot password?-->
-    <!--    </RouterLink>-->
+    <div class="dropdown-divider" />
+    <RouterLink class="dropdown-item" :to="{ name: 'register' }">
+      New around here? Sign up
+    </RouterLink>
+    <RouterLink class="dropdown-item" :to="{ name: 'password-reset-request' }">
+      Forgot password?
+    </RouterLink>
   </div>
 </template>
 

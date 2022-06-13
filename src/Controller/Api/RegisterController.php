@@ -9,11 +9,11 @@ use App\Entity\User;
 use App\Manager\UserMailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractRestController
 {
-    // NEXT_RELEASE: uncomment
-    // #[Route('/users/register', methods: ['POST'])]
+    #[Route('/users/register', methods: ['POST'])]
     public function register(UserPasswordHasherInterface $passwordHasher, UserMailer $userMailer, Request $request, $registerLimiter): void
     {
         $limiter = $registerLimiter->create($request->getClientIp());
