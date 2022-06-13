@@ -36,7 +36,9 @@
             :to="{ name: 'novel', params: { id: latestNovels[0].id } }"
             class="carousel-caption text-white"
           >
-            <h5 class="text-truncate">{{ latestNovels[0].title }}</h5>
+            <div class="fs-5 fw-semibold text-truncate">
+              {{ latestNovels[0].title }}
+            </div>
             <p class="d-none d-md-block">
               {{ latestNovels[0].shortDescription }}
             </p>
@@ -57,7 +59,7 @@
             :to="{ name: 'novel', params: { id: novel.id } }"
             class="carousel-caption text-white"
           >
-            <h5 class="text-truncate">{{ novel.title }}</h5>
+            <div class="fs-5 fw-semibold text-truncate">{{ novel.title }}</div>
             <p class="d-none d-md-block">{{ novel.shortDescription }}</p>
           </RouterLink>
         </div>

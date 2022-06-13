@@ -8,7 +8,12 @@
         z
         :to="{ name: 'home' }"
       >
-        <img src="/favicon-32x32.png" height="32" width="32" />
+        <img
+          src="/android-chrome-192x192.png"
+          height="32"
+          width="32"
+          alt="header icon"
+        />
         <span class="position-absolute" style="left: 32px; top: 10px">
           erspiel
         </span>
