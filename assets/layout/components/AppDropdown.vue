@@ -21,7 +21,7 @@
     </li>
     <li>
       <a
-        v-if="user.badges.includes('Admin') || user.badges.includes('Editor')"
+        v-if="user.badges.includes('admin') || user.badges.includes('editor')"
         class="dropdown-item"
         href="/admin/dashboard"
       >
