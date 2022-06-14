@@ -17,7 +17,7 @@ const authenticate = async (credentials) => {
 
 const refreshUser = async () => {
   try {
-    const { data } = await axios.get('/api/users/me');
+    const { data } = await axios.get('/api/users/@me');
     user.value = data;
   } catch (error) {
     clearSession();

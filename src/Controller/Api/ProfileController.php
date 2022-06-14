@@ -18,7 +18,7 @@ class ProfileController extends AbstractRestController
         'username',
     ];
 
-    #[Route('/users/me', methods: ['POST'])]
+    #[Route('/users/@me', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function updateUser(#[CurrentUser] ?User $user, Request $request, RateLimiterFactory $usernameChangeLimiter): ConstraintViolationListInterface|array
     {

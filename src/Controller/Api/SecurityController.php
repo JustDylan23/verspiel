@@ -31,7 +31,7 @@ class SecurityController extends AbstractRestController
         return $this->viewItem($user);
     }
 
-    #[Route('/users/me', methods: ['GET'])]
+    #[Route('/users/@me', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function user(#[CurrentUser] ?User $user): array|Response
     {

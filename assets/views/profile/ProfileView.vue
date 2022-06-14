@@ -43,7 +43,7 @@ const { user } = useSecurity();
 const { toast } = useToast();
 
 const profile = reactive({
-  to: '/api/users/me',
+  to: '/api/users/@me',
   data: {
     username: user.value.username,
   },
