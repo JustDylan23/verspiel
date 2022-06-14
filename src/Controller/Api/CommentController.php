@@ -26,7 +26,6 @@ class CommentController extends AbstractRestController
     ];
 
     protected const WRITE_ATTRIBUTES = [
-        'id',
         'content',
         'commentSection',
         'replyTo',

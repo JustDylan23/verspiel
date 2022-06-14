@@ -110,9 +110,9 @@ abstract class AbstractRestController extends AbstractController
         return $this->validator->validate($data);
     }
 
-    protected function assertValid($data): void
+    protected function assertValid($data, $groups = ['Default']): void
     {
-        $violations = $this->validator->validate($data);
+        $violations = $this->validator->validate($data, $groups);
         if ($violations->count() > 0) {
             throw new InvalidEntityException($violations);
         }
