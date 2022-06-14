@@ -5,23 +5,14 @@ monolog:
 when@dev:
     monolog:
         handlers:
-            main:
-                type: stream
-                path: "%kernel.logs_dir%/%kernel.environment%.log"
+            filter_for_errors:
+                type: fingers_crossed
+                action_level: critical
+                handler: file_log
+            file_log:
+                type: service
+                id: App\Logger\DiscordNotifier
                 level: debug
-                channels: ["!event"]
-            # uncomment to get logging in your browser
-            # you may have to allow bigger header sizes in your Web server configuration
-            #firephp:
-            #    type: firephp
-            #    level: info
-            #chromephp:
-            #    type: chromephp
-            #    level: info
-            console:
-                type: console
-                process_psr_3_messages: false
-                channels: ["!event", "!doctrine", "!console"]
 
 when@test:
     monolog:
@@ -49,6 +40,10 @@ when@prod:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 max_files: 10
+            discord_log:
+                type: service
+                id: App\Logger\DiscordNotifier
+                level: debug
             nested:
                 type: stream
                 path: php://stderr
