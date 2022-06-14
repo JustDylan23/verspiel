@@ -14,10 +14,4 @@ class IndexController extends AbstractController
     {
         return $this->render('vue_base.html.twig');
     }
-
-    #[Route('/api/test', methods: ['GET'])]
-    public function test()
-    {
-        throw new \Error();
-    }
 }
