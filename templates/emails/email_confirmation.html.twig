@@ -89,7 +89,7 @@
                                                     <tbody>
                                                     <tr>
                                                         <td style="line-height: 24px; font-size: 16px; border-radius: 4px; font-weight: 700 !important; margin: 0;" align="center" bgcolor="#8c68cd">
-                                                            <a href="{{ path('register_complete', {}, true) }}" style="color: #ffffff; font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: block; font-weight: 700 !important; white-space: nowrap; background-color: #8c68cd; padding: 12px; border: 1px solid #8c68cd;">Verify</a>
+                                                            <a href="{{ absolute_url(path('register_complete', { token: user.emailVerificationToken })) }}" style="color: #ffffff; font-size: 16px; font-family: Helvetica, Arial, sans-serif; text-decoration: none; border-radius: 4px; line-height: 20px; display: block; font-weight: 700 !important; white-space: nowrap; background-color: #8c68cd; padding: 12px; border: 1px solid #8c68cd;">Verify</a>
                                                         </td>
                                                     </tr>
                                                     </tbody>

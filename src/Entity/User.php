@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private $passwordResetTokenDate;
 
     #[ORM\Column(type: 'boolean')]
-    private $disabled;
+    private $disabled = false;
 
     public function __construct()
     {
