@@ -6,6 +6,7 @@ const isAuthenticated = computed(() => user.value !== null);
 const logout = () => {
   user.value = null;
   clearSession();
+  axios.get('/logout');
 };
 
 const authenticate = async (credentials) => {
