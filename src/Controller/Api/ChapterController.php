@@ -39,8 +39,8 @@ class ChapterController extends AbstractRestController
         ],
     ];
 
-    #[Route('/chapters/latest', methods: ['GET'])]
-    public function getLatestChapters(ChapterRepository $chapterRepository): array
+    #[Route('/chapters/latest', name: 'api_chapters_get_list_latest', methods: ['GET'])]
+    public function latest(ChapterRepository $chapterRepository): array
     {
         // limited to 10
         $chapters = $chapterRepository->findLatest();
@@ -48,8 +48,8 @@ class ChapterController extends AbstractRestController
         return $this->viewList($chapters);
     }
 
-    #[Route('/chapters', methods: ['GET'])]
-    public function getChapters(
+    #[Route('/chapters', name: 'api_chapters_get_list', methods: ['GET'])]
+    public function list(
         ChapterRepository $chapterRepository,
         ApiFilterProcessor $filter,
         ApiPaginator $apiPaginator
@@ -66,8 +66,8 @@ class ChapterController extends AbstractRestController
         return $this->viewList($apiPaginator->paginate($queryBuilder));
     }
 
-    #[Route('/chapters/{id<\d+>}', methods: ['GET'])]
-    public function getChapter(int $id, ChapterRepository $chapterRepository): array
+    #[Route('/chapters/{id<\d+>}', name: 'api_chapters_get_item', methods: ['GET'])]
+    public function get(int $id, ChapterRepository $chapterRepository): array
     {
         $novel = $chapterRepository->getChapter($id);
 
@@ -77,8 +77,8 @@ class ChapterController extends AbstractRestController
         return $array;
     }
 
-    #[Route('/novels/{id<\d+>}/chapters', methods: ['GET'])]
-    public function getChaptersForNovel(int $id, ChapterRepository $chapterRepository): array
+    #[Route('/novels/{id<\d+>}/chapters', name: 'api_novels_chapters_get_list', methods: ['GET'])]
+    public function getByNovel(int $id, ChapterRepository $chapterRepository): array
     {
         $novels = $chapterRepository->getChaptersByNovel($id);
 

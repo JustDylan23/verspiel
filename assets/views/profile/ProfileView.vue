@@ -44,6 +44,7 @@ const { toast } = useToast();
 
 const profile = reactive({
   to: '/api/users/@me',
+  method: 'patch',
   data: {
     username: user.value.username,
   },

@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PasswordResetController extends AbstractRestController
 {
-    #[Route('/password-reset/request', name: 'password_reset_request', methods: ['POST'])]
-    public function requestResetPassword(
+    #[Route('/password-reset/request', name: 'api_password_reset_request', methods: ['POST'])]
+    public function request(
         RateLimiterFactory $passwordResetLimiter,
         UserRepository $userRepository,
         UserMailer $userMailer
@@ -40,8 +40,8 @@ class PasswordResetController extends AbstractRestController
         $userMailer->sendPasswordResetEmail($user);
     }
 
-    #[Route('/password-reset/complete', name: 'password_reset_complete', methods: ['POST'])]
-    public function updatePassword(UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
+    #[Route('/password-reset/complete', name: 'api_password_reset_complete', methods: ['POST'])]
+    public function complete(UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
     {
         $passwordResetDTO = new PasswordResetDTO();
         $this->deserializeRequestContent($passwordResetDTO);

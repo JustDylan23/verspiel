@@ -8,7 +8,7 @@ export const submitForm = async (form) => {
     form.isSubmitting = true;
     form.error = null;
     form.validationErrors = {};
-    await axios.post(form.to, form.data);
+    await axios[form.method ?? 'post'](form.to, form.data);
     form.postSave();
   } catch (e) {
     if (e.response.status === 422) {

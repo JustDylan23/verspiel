@@ -36,24 +36,24 @@ class NovelController extends AbstractRestController
         'createdAt',
     ];
 
-    #[Route('/novels/featured', methods: ['GET'])]
-    public function getFeaturedNovels(NovelRepository $novelRepository): array
+    #[Route('/novels/featured', name: 'api_novels_get_list_featured', methods: ['GET'])]
+    public function featured(NovelRepository $novelRepository): array
     {
         $novels = $novelRepository->getLatestNovels();
 
         return $this->viewList($novels);
     }
 
-    #[Route('/novels/{id<\d+>}', methods: ['GET'])]
-    public function getNovel(int $id, NovelRepository $novelRepository): array
+    #[Route('/novels/{id<\d+>}', name: 'api_novels_get_item', methods: ['GET'])]
+    public function get(int $id, NovelRepository $novelRepository): array
     {
         $novel = $novelRepository->getNovel($id);
 
         return $this->viewItem($novel);
     }
 
-    #[Route('/novels', methods: ['GET'])]
-    public function getNovels(ApiFilterProcessor $filter, ApiPaginator $apiPaginator, NovelRepository $novelRepository): array
+    #[Route('/novels', name: 'api_novels_get_list', methods: ['GET'])]
+    public function list(ApiFilterProcessor $filter, ApiPaginator $apiPaginator, NovelRepository $novelRepository): array
     {
         $queryBuilder = $novelRepository->getNovelsQB();
 

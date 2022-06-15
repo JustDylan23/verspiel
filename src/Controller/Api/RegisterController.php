@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractRestController
 {
-    #[Route('/users/register', methods: ['POST'])]
+    #[Route('/users/register', name: 'api_user_post', methods: ['POST'])]
     public function register(UserPasswordHasherInterface $passwordHasher, UserMailer $userMailer, Request $request, RateLimiterFactory $registerLimiter): void
     {
         $limiter = $registerLimiter->create($request->getClientIp());

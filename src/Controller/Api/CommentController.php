@@ -32,8 +32,8 @@ class CommentController extends AbstractRestController
         'author',
     ];
 
-    #[Route('/comment-sections/{id<\d+>}/comments', methods: ['GET'])]
-    public function readComments(
+    #[Route('/comment-sections/{id<\d+>}/comments', name: 'api_commentsection_comments_list', methods: ['GET'])]
+    public function read(
         int $id,
         Request $request,
         ApiPaginator $apiPaginator,
@@ -57,9 +57,9 @@ class CommentController extends AbstractRestController
         return $this->viewList($comments);
     }
 
-    #[Route('/comments', methods: ['POST'])]
+    #[Route('/comments', name: 'api_comments_post', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function postComment(
+    public function create(
         Request $request,
         RateLimiterFactory $postCommentLimiter
     ): ConstraintViolationListInterface|array {
@@ -75,9 +75,9 @@ class CommentController extends AbstractRestController
         return $this->viewCreate($comment);
     }
 
-    #[Route('/comments/{id<\d+>}', methods: ['DELETE'])]
+    #[Route('/comments/{id<\d+>}', name: 'api_comments_delete', methods: ['DELETE'])]
     #[IsGranted('ROLE_USER')]
-    public function deleteComment(int $id, CommentRepository $commentRepository): ConstraintViolationListInterface|null
+    public function delete(int $id, CommentRepository $commentRepository): ConstraintViolationListInterface|null
     {
         $comment = $commentRepository->find($id);
 
