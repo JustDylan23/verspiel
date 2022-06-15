@@ -26,7 +26,7 @@ class DiscordNotifier extends AbstractProcessingHandler
     }
 
 
-    protected function write(LogRecord $record): void
+    public function write(LogRecord $record): void
     {
         $message = new ChatMessage('');
         $message->transport('discord');

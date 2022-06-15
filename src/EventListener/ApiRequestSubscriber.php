@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Logger\DiscordNotifier;
 use App\Validator\InvalidEntityException;
+use DateTimeImmutable;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +30,7 @@ class ApiRequestSubscriber implements EventSubscriberInterface
         private readonly RouterInterface $router,
         private readonly KernelInterface $kernel,
         private readonly Security $security,
+        private readonly DiscordNotifier $discordNotifier,
     ) {
     }
 
@@ -104,6 +109,13 @@ class ApiRequestSubscriber implements EventSubscriberInterface
                     }
                     $content['trace'] = $throwable->getTraceAsString();
                 }
+                $this->discordNotifier->write(new LogRecord(
+                    new DateTimeImmutable(),
+                    'api',
+                    Level::Critical,
+                    $throwable->getMessage(),
+                    ['exception' => $throwable],
+                ));
             }
         }
 

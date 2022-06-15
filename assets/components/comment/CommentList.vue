@@ -20,8 +20,8 @@
             {{ comment.author.username }}
           </strong>
           <span
-            v-for="(badge, key) in comment.author.badges"
-            :key="key"
+            v-for="(badge, k2) in comment.author.badges"
+            :key="k2"
             class="badge bg-primary text-black rounded-pill me-2 text-capitalize"
             style="font-size: 0.7rem; line-height: 1rem"
           >
