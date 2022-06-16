@@ -41,7 +41,7 @@ class DiscordNotifier extends AbstractProcessingHandler
                 ->color(12289788)
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Request URI')
-                    ->value($this->requestStack->getCurrentRequest()->getRequestUri())
+                    ->value($this->requestStack?->getCurrentRequest()?->getRequestUri() ?? 'N/A')
                 )
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Channel')

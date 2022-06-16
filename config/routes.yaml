@@ -7,6 +7,14 @@ api:
     type: annotation
     prefix: api
 
+api_token:
+    resource: ../src/Controller/Api/Token
+    type: annotation
+    prefix: api/token
+
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+api_login_check:
+    path: /api/token/authenticate
