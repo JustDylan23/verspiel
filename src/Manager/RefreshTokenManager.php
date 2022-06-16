@@ -37,6 +37,9 @@ class RefreshTokenManager
     public function assertRefreshTokenValid(?RefreshToken $refreshToken): void
     {
         if (null === $refreshToken || $refreshToken->isExpired()) {
+            if (null !== $refreshToken) {
+                $this->revokeRefreshToken($refreshToken);
+            }
             throw new UnauthorizedHttpException('', 'Invalid refresh token');
         }
     }
