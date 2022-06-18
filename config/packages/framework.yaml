@@ -1,5 +1,7 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    enabled_locales: ['en']
+    trusted_hosts:  ['^verspiel\.com$', '^localhost$']
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     http_method_override: false
