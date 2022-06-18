@@ -8,26 +8,19 @@
       No chapters added yet!
     </p>
     <div class="list-group" itemprop="hasPart">
-      <RouterLink
+      <BaseListItem
         v-for="chapter in novel.chapters"
         :key="chapter.id"
-        class="list-group-item list-group-item-action d-flex ps-0"
         :to="{ name: 'chapter', params: { id: chapter.id } }"
+        :created-at="chapter.createdAt"
+        icon="bi bi-bookmark"
+        small-header
       >
-        <div
-          class="d-flex align-items-center justify-content-center"
-          style="width: 60px"
-        >
-          <i class="bi bi-bookmark" />
-        </div>
-        <div>
-          <div>
-            Chapter {{ chapter.number }}
-            {{ chapter.title ? '- ' + chapter.title : '' }}
-          </div>
-          <small>{{ formatDateString(chapter.createdAt) }}</small>
-        </div>
-      </RouterLink>
+        <template #header>
+          Chapter {{ chapter.number }}
+          {{ chapter.title ? '- ' + chapter.title : '' }}
+        </template>
+      </BaseListItem>
     </div>
   </div>
   <Suspense>
@@ -47,8 +40,8 @@ import { reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import AppBreadcrumb from '@/components/breadcrumb/AppBreadcrumb.vue';
 import CommentSection from '@/components/comment/CommentSection.vue';
-import { formatDateString } from '@/utils/date';
 import { useHead } from '@vueuse/head';
+import BaseListItem from '@/components/list/BaseListItem.vue';
 
 const route = useRoute();
 

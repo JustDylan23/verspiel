@@ -11,7 +11,10 @@
     </div>
     <div class="flex-grow-1" style="min-width: 0">
       <div class="d-flex">
-        <div class="fs-5 flex-grow-1 text-truncate me-2">
+        <div
+          class="flex-grow-1 text-truncate me-2"
+          :class="{ 'fs-5': !smallHeader }"
+        >
           <slot name="header" />
         </div>
         <small class="text-nowrap">
@@ -40,6 +43,10 @@ defineProps({
   createdAt: {
     type: String,
     require: true,
+  },
+  smallHeader: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>
