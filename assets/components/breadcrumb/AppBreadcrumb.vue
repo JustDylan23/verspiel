@@ -1,6 +1,6 @@
 <template>
   <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-    <div class="breadcrumb flex-nowrap">
+    <ol class="breadcrumb flex-nowrap">
       <RouterLink
         v-for="(navigation, key) in nav"
         :key="key"
@@ -14,7 +14,7 @@
       >
         {{ navigation.name }}
       </RouterLink>
-    </div>
+    </ol>
   </nav>
 </template>
 
