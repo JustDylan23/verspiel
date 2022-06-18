@@ -34,6 +34,7 @@
         class="btn rounded-5 btn-sm d-flex justify-content-center"
         :class="chapter.nextChapter !== null ? 'btn-primary' : 'btn-dark-grey'"
         :to="nextChapterLink"
+        :disabled="chapter.nextChapter === null"
       >
         <span class="ps-1">Next</span>
         <i class="bi bi-chevron-right" />

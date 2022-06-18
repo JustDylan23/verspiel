@@ -3,11 +3,11 @@
     <small v-if="!isAuthenticated" class="text-white-50">
       Log in to leave comments
     </small>
-    <div v-else class="position-relative">
+    <div v-else class="d-flex w-100">
       <textarea
         v-model="text"
         type="text"
-        class="form-control bg-transparent text-light pe-5"
+        class="form-control bg-transparent text-light"
         :placeholder="isReaction ? 'Add a reaction...' : 'Leave a comment...'"
         :rows="newLines"
         style="resize: none"
@@ -16,12 +16,14 @@
       />
       <button
         ref="btn"
-        class="btn btn-outline-primary border-0 position-absolute bottom-0 end-0"
+        class="btn btn-outline-primary border-0 text-nowrap"
         :disabled="isSubmitting"
         @click="send"
       >
-        <i class="bi bi-send" />
-        Send
+        <span class="align-self-end">
+          <i class="bi bi-send" />
+          Send
+        </span>
       </button>
     </div>
     <small class="text-danger">{{ error }}</small>
@@ -33,6 +35,7 @@ import { computed, reactive, ref } from 'vue';
 import { useSecurity } from '@/state/security';
 import axios from 'axios';
 import replyBus from '@/components/comment/replyBus.js';
+import { useToast } from '@/utils/notification.js';
 
 const emit = defineEmits(['send']);
 const isSubmitting = ref(false);
@@ -60,6 +63,8 @@ const text = ref('');
 const btn = ref();
 const newLines = computed(() => text.value.split('\n').length);
 
+const { success } = useToast();
+
 const send = async () => {
   if (text.value.trim()) {
     isSubmitting.value = true;
@@ -71,6 +76,8 @@ const send = async () => {
         content: text.value.trim(),
         author: user.value.id,
       });
+
+      success('Comment sent');
 
       const event = reactive({
         id: data.id,
@@ -106,6 +113,6 @@ const send = async () => {
 }
 
 .reply-field:focus-within button {
-  display: block;
+  display: flex;
 }
 </style>

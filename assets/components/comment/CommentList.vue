@@ -139,6 +139,7 @@ import { formatDateString } from '@/utils/date';
 import replyBus from '@/components/comment/replyBus.js';
 import { useDebounceFn } from '@vueuse/core';
 import { useSecurity } from '@/state/security';
+import { useToast } from '@/utils/notification.js';
 
 const emit = defineEmits(['remove']);
 
@@ -167,6 +168,8 @@ const props = defineProps({
 const { isAuthenticated, canDeleteComments } = useSecurity();
 
 const reactions = ref();
+
+const { success } = useToast();
 
 const comments = reactive([]);
 const cursor = ref(0);
@@ -228,6 +231,8 @@ const deleteComment = async (comment, index) => {
     await axios.delete('/api/comments/' + comment.id);
     emit('remove');
     comments.splice(index, 1);
+
+    success('Deleted comment');
   }
 };
 

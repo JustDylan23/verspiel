@@ -1,33 +1,20 @@
 <template>
   <div class="list-group">
-    <RouterLink
+    <BaseListItem
       v-for="novel in items"
       :key="novel.id"
       :to="{ name: 'novel', params: { id: novel.id } }"
-      class="list-group-item list-group-item-action ps-0 d-flex"
+      :created-at="novel.createdAt"
+      icon="bi bi-book"
     >
-      <div
-        class="d-flex align-items-center justify-content-center"
-        style="width: 60px"
-      >
-        <i class="bi bi-book" />
-      </div>
-      <div
-        class="flex-grow-1 text-decoration-none d-flex flex-column"
-        style="min-width: 0"
-      >
-        <div class="fs-5 text-truncate me-2">
-          {{ novel.title }}
-        </div>
-        <small class="text-truncate">{{ novel.shortDescription }}</small>
-      </div>
-      <small>{{ formatDateString(novel.createdAt) }}</small>
-    </RouterLink>
+      <template #header>{{ novel.title }}</template>
+      <template #description>{{ novel.shortDescription }}</template>
+    </BaseListItem>
   </div>
 </template>
 
 <script setup>
-import { formatDateString } from '@/utils/date';
+import BaseListItem from '@/components/list/BaseListItem.vue';
 
 defineProps({
   items: {

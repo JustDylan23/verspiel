@@ -2,7 +2,7 @@
   <TransitionGroup
     name="list"
     tag="div"
-    class="toast-container top-0 end-0 m-3"
+    class="toast-container top-0 end-0 m-3 position-fixed"
   >
     <div
       v-for="toast of notifications"
