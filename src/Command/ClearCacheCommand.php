@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:clear:cache',
+    name: 'app:cache:clear',
     description: 'Clear opcache',
 )]
 class ClearCacheCommand extends Command
