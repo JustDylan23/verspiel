@@ -28,7 +28,7 @@ class DiscordNotifier extends AbstractProcessingHandler
 
     public function write(LogRecord $record): void
     {
-        if (empty($record->context)){
+        if (null === $this->requestStack->getCurrentRequest()){
             return;
         }
         $message = new ChatMessage('');
