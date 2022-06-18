@@ -12,8 +12,11 @@
       >
         <i class="bi bi-book" />
       </div>
-      <div class="flex-grow-1 text-decoration-none d-flex flex-column">
-        <div class="fs-5 text-truncate">
+      <div
+        class="flex-grow-1 text-decoration-none d-flex flex-column"
+        style="min-width: 0"
+      >
+        <div class="fs-5 text-truncate me-2">
           {{ novel.title }}
         </div>
         <small class="text-truncate">{{ novel.shortDescription }}</small>
