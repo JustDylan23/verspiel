@@ -165,7 +165,7 @@ const props = defineProps({
   },
 });
 
-const { isAuthenticated, canDeleteComments } = useSecurity();
+const { isAuthenticated, canDeleteComments, securedAxios } = useSecurity();
 
 const reactions = ref();
 
@@ -228,7 +228,7 @@ if (props.replyTo) {
 
 const deleteComment = async (comment, index) => {
   if (confirm('Are you sure you want to delete this comment?')) {
-    await axios.delete('/api/comments/' + comment.id);
+    await securedAxios.delete('/api/comments/' + comment.id);
     emit('remove');
     comments.splice(index, 1);
 
