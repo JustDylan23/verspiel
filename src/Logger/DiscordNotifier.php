@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Logger;
 
+use Error;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -28,7 +29,7 @@ class DiscordNotifier extends AbstractProcessingHandler
 
     public function write(LogRecord $record): void
     {
-        if (null === $this->requestStack->getCurrentRequest()){
+        if (null === $this->requestStack->getCurrentRequest()) {
             return;
         }
         $message = new ChatMessage('');
@@ -38,10 +39,10 @@ class DiscordNotifier extends AbstractProcessingHandler
             ->username('Verspiel logger')
             ->avatarUrl($this->urlHelper->getAbsoluteUrl('/android-chrome-192x192.png'))
             ->addEmbed((new DiscordEmbed())
+                ->color(12289788)
                 ->timestamp((new \DateTime())->setTimestamp($record->datetime->getTimestamp()))
                 ->title('Internal server error')
                 ->description(empty($record->message) ? 'No message' : $record->message)
-                ->color(12289788)
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Request URI')
                     ->value($this->requestStack?->getCurrentRequest()?->getRequestUri() ?? 'N/A')
@@ -50,14 +51,22 @@ class DiscordNotifier extends AbstractProcessingHandler
                     ->name('Channel')
                     ->value(empty($record->channel) ? 'N/A' : $record->channel)
                 )
-                ->addField((new DiscordFieldEmbedObject())
-                    ->name('Stacktrace')
-                    ->value("```m\n".$record->context['exception']->getTraceAsString().'```')
-                )
             )
         ;
         $message->options($discordOptions);
 
         $this->chatter->send($message);
+    }
+
+    private function encode($value): string
+    {
+        if ($value instanceof \Exception) {
+            return substr($value->getTraceAsString(), 0, 50);
+        }
+        if ($value instanceof \Error) {
+            return substr($value->getTraceAsString(), 0, 50);
+        }
+
+        return json_encode($value);
     }
 }
