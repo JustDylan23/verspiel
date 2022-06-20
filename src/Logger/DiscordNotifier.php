@@ -48,7 +48,7 @@ class DiscordNotifier extends AbstractProcessingHandler
                 )
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Channel')
-                    ->value($record->channel)
+                    ->value(empty($record->channel) ? 'N/A' : $record->channel)
                 )
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Stacktrace')
