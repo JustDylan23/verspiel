@@ -18,7 +18,7 @@ class RefreshTokenController extends AbstractController
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManager $refreshTokenManager
     ): array {
-        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request->getContent());
+        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request);
         $refreshTokenManager->assertRefreshTokenValid($refreshToken);
 
         return [

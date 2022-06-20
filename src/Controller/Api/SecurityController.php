@@ -61,7 +61,6 @@ class SecurityController extends AbstractRestController
         $limiter = $usernameChangeLimiter->create($request->getClientIp());
         $limiter->consume()->ensureAccepted();
 
-
         return $this->viewPatch($user);
     }
 }

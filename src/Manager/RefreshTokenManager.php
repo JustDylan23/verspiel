@@ -7,6 +7,7 @@ namespace App\Manager;
 use App\Entity\RefreshToken;
 use App\Repository\RefreshTokenRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Security;
 
@@ -29,18 +30,21 @@ class RefreshTokenManager
         return $refreshToken;
     }
 
-    public function retrieveRefreshToken(string $refreshToken): ?RefreshToken
+    public function retrieveRefreshToken(Request $request): ?RefreshToken
     {
+        $refreshToken = $request->cookies->get('REFRESH_TOKEN', $request->getContent());
+
         return $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshToken]);
     }
 
     public function assertRefreshTokenValid(?RefreshToken $refreshToken): void
     {
-        if (null === $refreshToken || $refreshToken->isExpired()) {
-            if (null !== $refreshToken) {
-                $this->revokeRefreshToken($refreshToken);
-            }
+        if (null === $refreshToken) {
             throw new UnauthorizedHttpException('', 'Invalid refresh token');
+        }
+        if ($refreshToken->isExpired()) {
+            $this->revokeRefreshToken($refreshToken);
+            throw new UnauthorizedHttpException('', 'Expired refresh token');
         }
     }
 

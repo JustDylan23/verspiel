@@ -6,11 +6,16 @@ const isAuthenticated = computed(() => user.value !== null);
 const logout = () => {
   user.value = null;
   clearSession();
-  axios.post('/logout');
 };
 
+const securedAxios = axios.create();
+
 const authenticate = async (credentials) => {
-  const { data } = await axios.post('/api/login', credentials);
+  const { token } = await axios
+    .post('/api/token/authenticate', credentials)
+    .then((response) => response.data);
+  securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+  const { data } = await securedAxios.get('/api/users/@me');
   localStorage.setItem('auth', '1');
   user.value = data;
   isAuthenticated.value = true;
@@ -18,18 +23,58 @@ const authenticate = async (credentials) => {
 
 const refreshUser = async () => {
   try {
-    const { data } = await axios.get('/api/users/@me');
+    const { token } = await axios
+      .post('/api/token/refresh')
+      .then((response) => response.data);
+    securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    const { data } = await securedAxios.get('/api/users/@me');
     user.value = data;
   } catch (error) {
     clearSession();
   }
 };
 
+const refreshToken = async () => {
+  try {
+    const { token } = await axios
+      .post('/api/token/refresh')
+      .then((response) => response.data);
+    securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    return token;
+  } catch (error) {
+    logout();
+    return null;
+  }
+};
+
+securedAxios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
+    if (
+      error.response.status === 401 &&
+      error.response.data.message === 'Expired JWT Token' &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      const token = await refreshToken();
+      if (token !== null) {
+        error.response.config.headers['Authorization'] = `Bearer ${token}`;
+        return securedAxios(originalRequest);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 const hasSession = () => {
   return localStorage.getItem('auth') === '1';
 };
 
 const clearSession = () => {
+  securedAxios.defaults.headers['Authorization'] = undefined;
   localStorage.removeItem('auth');
 };
 
@@ -49,6 +94,7 @@ export const useSecurity = () => {
     logout,
     hasSession,
     refreshUser,
+    securedAxios,
     canDeleteComments,
   };
 };

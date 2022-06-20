@@ -5,13 +5,15 @@ monolog:
 when@dev:
     monolog:
         handlers:
-            filter_for_errors:
+            main:
                 type: fingers_crossed
-                action_level: critical
-                handler: file_log
-            file_log:
-                type: service
-                id: App\Logger\DiscordNotifier
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ["!event"]
+            nested:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
 
 when@test:
@@ -40,6 +42,10 @@ when@prod:
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 max_files: 10
+            filter_for_errors_2:
+                type: fingers_crossed
+                action_level: critical
+                handler: discord_log
             discord_log:
                 type: service
                 id: App\Logger\DiscordNotifier

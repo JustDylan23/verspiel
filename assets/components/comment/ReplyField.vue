@@ -33,7 +33,6 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
 import { useSecurity } from '@/state/security';
-import axios from 'axios';
 import replyBus from '@/components/comment/replyBus.js';
 import { useToast } from '@/utils/notification.js';
 
@@ -56,7 +55,7 @@ const props = defineProps({
   },
 });
 
-const { isAuthenticated, user } = useSecurity();
+const { isAuthenticated, user, securedAxios } = useSecurity();
 
 const error = ref(null);
 const text = ref('');
@@ -70,7 +69,7 @@ const send = async () => {
     isSubmitting.value = true;
     error.value = null;
     try {
-      const { data } = await axios.post('/api/comments', {
+      const { data } = await securedAxios.post('/api/comments', {
         commentSection: props.commentSection,
         replyTo: props.replyTo,
         content: text.value.trim(),

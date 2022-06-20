@@ -39,19 +39,20 @@ import { useHead } from '@vueuse/head';
 import { submitForm } from '@/utils/form.js';
 import axios from 'axios';
 
-const { user } = useSecurity();
+const { user, refreshUser } = useSecurity();
 const { toast } = useToast();
 
 const profile = reactive({
   to: '/api/users/@me',
   method: 'patch',
+  secured: true,
   data: {
     username: user.value.username,
   },
   isSubmitting: false,
   validationErrors: {},
-  postSave: () => {
-    user.value.username = profile.data.username;
+  postSave: async () => {
+    await refreshUser();
     toast('Profile updated');
   },
 });

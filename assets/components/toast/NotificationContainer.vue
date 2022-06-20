@@ -3,6 +3,7 @@
     name="list"
     tag="div"
     class="toast-container top-0 end-0 m-3 position-fixed"
+    style="z-index: 1210"
   >
     <div
       v-for="toast of notifications"

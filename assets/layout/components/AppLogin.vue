@@ -89,7 +89,7 @@ const login = async () => {
       await router.push({ name: 'home' });
     }
   } catch (e) {
-    error.value = e.response.data.error;
+    error.value = e.response.data.message;
   }
   isSubmitting.value = false;
 };

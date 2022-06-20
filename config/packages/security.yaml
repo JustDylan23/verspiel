@@ -20,29 +20,35 @@ security:
                 check_path: /api/token/authenticate
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-        main:
-            jwt: ~
-            lazy: true
+            user_checker: App\Security\UserChecker
             login_throttling:
                 max_attempts: 5
                 interval: '10 minutes'
-            json_login:
-                check_path: api_login
+        api:
+            pattern: ^/api
+            stateless: true
+            jwt: ~
             user_checker: App\Security\UserChecker
+        admin:
+            pattern: ^/admin
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: admin_login
+                check_path: admin_login
+                enable_csrf: true
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
+            login_throttling:
+                max_attempts: 3
+                interval: '10 minutes'
             logout:
-                path: app_logout
+                path: admin_logout
+                target: admin_login
             remember_me:
-                secret: '%env(APP_SECRET)%'
-                lifetime: 2419200 # 4 weeks in seconds
-                always_remember_me: true
-                # where to redirect after logout
-                # target: app_any_route
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /admin
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_MODERATOR ]
@@ -57,8 +63,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/token/(authenticate|refresh), roles: PUBLIC_ACCESS }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/api/users/me, roles: ROLE_USER }
 
 when@test:
     security:
