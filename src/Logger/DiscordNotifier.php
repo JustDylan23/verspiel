@@ -40,7 +40,7 @@ class DiscordNotifier extends AbstractProcessingHandler
             ->addEmbed((new DiscordEmbed())
                 ->timestamp((new \DateTime())->setTimestamp($record->datetime->getTimestamp()))
                 ->title('Internal server error')
-                ->description($record->message)
+                ->description(empty($record->message) ? 'No message' : $record->message)
                 ->color(12289788)
                 ->addField((new DiscordFieldEmbedObject())
                     ->name('Request URI')

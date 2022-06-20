@@ -12,9 +12,15 @@ class RefreshToken
     #[ORM\Column(type: 'string', length: 255)]
     private $refreshToken;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $clientIp;
+
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER', inversedBy: 'refreshTokens')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
 
     #[ORM\Column(type: 'datetime')]
     private $expiresAt;
@@ -22,11 +28,13 @@ class RefreshToken
     /**
      * Creates a new model instance based on the provided details.
      */
-    public static function createForUserWithTtl(User $user, int $ttl): self
+    public static function createForUserWithTtl(User $user, int $ttl, string $clientIp): self
     {
         $model = new static();
         $model->refreshToken = bin2hex(random_bytes(64));
+        $model->clientIp = $clientIp;
         $model->user = $user;
+        $model->createdAt = new \DateTime();
         $model->expiresAt = new \DateTime('+'.$ttl.' seconds');
 
         return $model;
@@ -35,6 +43,11 @@ class RefreshToken
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
+    }
+
+    public function getClientIp(): ?string
+    {
+        return $this->clientIp;
     }
 
     public function getUser(): ?User
@@ -49,6 +62,11 @@ class RefreshToken
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
     public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
@@ -61,6 +79,6 @@ class RefreshToken
 
     public function __toString(): string
     {
-        return (string)$this->refreshToken;
+        return "{$this->user} ({$this->clientIp})";
     }
 }
