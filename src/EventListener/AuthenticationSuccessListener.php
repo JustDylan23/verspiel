@@ -42,5 +42,6 @@ class AuthenticationSuccessListener implements EventSubscriberInterface
 
         $response = $event->getResponse();
         $response->headers->setCookie(Cookie::create('REFRESH_TOKEN', $refreshToken->getRefreshToken(), $refreshToken->getExpiresAt(), '/api/token/refresh'));
+        $response->setPrivate();
     }
 }
