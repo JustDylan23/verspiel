@@ -14,7 +14,7 @@ const authenticate = async (credentials) => {
   const { token } = await axios
     .post('/api/token/authenticate', credentials)
     .then((response) => response.data);
-  securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+  securedAxios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const { data } = await securedAxios.get('/api/users/@me');
   localStorage.setItem('auth', '1');
   user.value = data;
@@ -26,7 +26,7 @@ const refreshUser = async () => {
     const { token } = await axios
       .post('/api/token/refresh')
       .then((response) => response.data);
-    securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    securedAxios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const { data } = await securedAxios.get('/api/users/@me');
     user.value = data;
   } catch (error) {
@@ -39,7 +39,7 @@ const refreshToken = async () => {
     const { token } = await axios
       .post('/api/token/refresh')
       .then((response) => response.data);
-    securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    securedAxios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return token;
   } catch (error) {
     logout();
@@ -61,7 +61,9 @@ securedAxios.interceptors.response.use(
       originalRequest._retry = true;
       const token = await refreshToken();
       if (token !== null) {
-        error.response.config.headers['Authorization'] = `Bearer ${token}`;
+        error.response.config.headers.common[
+          'Authorization'
+        ] = `Bearer ${token}`;
         return securedAxios(originalRequest);
       }
     }
@@ -74,7 +76,7 @@ const hasSession = () => {
 };
 
 const clearSession = () => {
-  securedAxios.defaults.headers['Authorization'] = undefined;
+  securedAxios.defaults.headers.common['Authorization'] = undefined;
   localStorage.removeItem('auth');
 };
 
