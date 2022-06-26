@@ -35,9 +35,11 @@ class RefreshTokenManager
         return $refreshToken;
     }
 
-    public function retrieveRefreshToken(string $token): ?RefreshToken
+    public function retrieveRefreshToken(Request $request): ?RefreshToken
     {
-        return $this->refreshTokenRepository->findOneBy(['refreshToken' => $token]);
+        $refreshToken = $request->cookies->get('REFRESH_TOKEN', $request->getContent());
+
+        return $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshToken]);
     }
 
     public function assertRefreshTokenValid(?RefreshToken $refreshToken): void
