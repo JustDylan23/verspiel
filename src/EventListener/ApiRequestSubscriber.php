@@ -50,6 +50,7 @@ class ApiRequestSubscriber implements EventSubscriberInterface
     private function controllerResultToResponse(ViewEvent $event): Response
     {
         $controllerResult = $event->getControllerResult();
+        $event->stopPropagation();
 
         if (null === $controllerResult) {
             return new Response(null, Response::HTTP_NO_CONTENT);
@@ -79,12 +80,12 @@ class ApiRequestSubscriber implements EventSubscriberInterface
         if (!$this->isApiRoute()) {
             return;
         }
+        $event->stopPropagation();
         $throwable = $event->getThrowable();
         $content = ['status' => 'error'];
         if ($throwable instanceof AccessDeniedException) {
             $status = null === $this->security->getToken() ? 401 : 403;
             $content['message'] = Response::$statusTexts[$status];
-            $event->stopPropagation();
         } else {
             if ($throwable instanceof InvalidEntityException) {
                 $status = Response::HTTP_UNPROCESSABLE_ENTITY;
