@@ -27,6 +27,14 @@ class RefreshTokenController extends AbstractController
         ];
     }
 
+    #[Route('/fix', methods: ['GET'])]
+    public function fix(): Response
+    {
+        $response = new Response(null, Response::HTTP_NO_CONTENT);
+        $response->headers->clearCookie('REFRESH_TOKEN', '/api/token/refresh');
+        return $response;
+    }
+
     #[Route('/revoke', methods: ['POST'])]
     public function revoke(Request $request, RefreshTokenManager $refreshTokenManager): Response
     {
