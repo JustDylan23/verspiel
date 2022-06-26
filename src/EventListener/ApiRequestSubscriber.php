@@ -115,7 +115,6 @@ class ApiRequestSubscriber implements EventSubscriberInterface
                     'api',
                     Level::Critical,
                     $throwable->getMessage(),
-                    ['exception' => $throwable],
                 ));
             }
         }

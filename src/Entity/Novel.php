@@ -38,7 +38,7 @@ class Novel
     private $chapters;
 
     #[ORM\Column(type: 'boolean')]
-    private $featured;
+    private $featured = false;
 
     public function __construct()
     {

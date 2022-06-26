@@ -18,12 +18,14 @@ class NovelFixtures extends Fixture
         $novel = new Novel();
         $novel->setTitle('novel_1');
         $novel->setDescription('description_1');
+        $novel->setShortDescription('description_1');
         $manager->persist($novel);
         $this->setReference(self::NOVEL_1, $novel);
 
         $novel = new Novel();
         $novel->setTitle('novel_2');
         $novel->setDescription('description_2');
+        $novel->setShortDescription('description_2');
         $manager->persist($novel);
         $this->setReference(self::NOVEL_2, $novel);
 
