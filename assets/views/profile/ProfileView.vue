@@ -39,8 +39,10 @@ import { useHead } from '@vueuse/head';
 import { submitForm } from '@/utils/form.js';
 import axios from 'axios';
 
-const { user, refreshUser } = useSecurity();
+const { user, refreshUser, securedAxios } = useSecurity();
 const { toast } = useToast();
+
+securedAxios.get('/api/users/@me');
 
 const profile = reactive({
   to: '/api/users/@me',

@@ -83,7 +83,7 @@ const chapters = reactive(
     .then(({ data }) => data)
 );
 
-const settings = useLocalStorage('reader-settings', {
+const settings = useLocalStorage('reader_settings', {
   width: 100,
   fontSize: 1,
   lineHeight: 1.5,

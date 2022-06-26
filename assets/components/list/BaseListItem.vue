@@ -35,14 +35,17 @@ defineProps({
   icon: {
     type: String,
     require: true,
+    default: null,
   },
   to: {
     type: Object,
     require: true,
+    default: null,
   },
   createdAt: {
     type: String,
     require: true,
+    default: null,
   },
   smallHeader: {
     type: Boolean,
