@@ -4,19 +4,19 @@ import axios from 'axios';
 const user = ref(null);
 const isAuthenticated = computed(() => user.value !== null);
 const logout = () => {
-  axios.post('/api/token/revoke');
+  axios.post('/api/token/revoke', getRefreshToken());
   clearSession();
 };
 
 const securedAxios = axios.create();
 
 const authenticate = async (credentials) => {
-  const { token } = await axios
+  const { token, refresh_token } = await axios
     .post('/api/token/authenticate', credentials)
     .then((response) => response.data);
   setJwtToken(token);
   const { data } = await securedAxios.get('/api/users/@me');
-  localStorage.setItem('auth', '1');
+  setRefreshToken(refresh_token);
   user.value = data;
   isAuthenticated.value = true;
 };
@@ -24,7 +24,7 @@ const authenticate = async (credentials) => {
 const refreshUser = async () => {
   try {
     const { token } = await axios
-      .post('/api/token/refresh')
+      .post('/api/token/refresh', getRefreshToken())
       .then((response) => response.data);
     setJwtToken(token);
     const { data } = await securedAxios.get('/api/users/@me');
@@ -37,7 +37,7 @@ const refreshUser = async () => {
 const refreshToken = async () => {
   try {
     const { token } = await axios
-      .post('/api/token/refresh')
+      .post('/api/token/refresh', getRefreshToken())
       .then((response) => response.data);
     setJwtToken(token);
     return token;
@@ -62,6 +62,7 @@ securedAxios.interceptors.response.use(
       const token = await refreshToken();
       if (token !== null) {
         error.response.config.headers['Authorization'] = `Bearer ${token}`;
+        console.log('retry');
         return securedAxios(originalRequest);
       }
     }
@@ -70,13 +71,21 @@ securedAxios.interceptors.response.use(
 );
 
 const hasSession = () => {
-  return localStorage.getItem('auth') === '1';
+  return localStorage.getItem('refresh_token') !== null;
+};
+
+const getRefreshToken = () => {
+  return localStorage.getItem('refresh_token');
+};
+
+const setRefreshToken = (token) => {
+  return localStorage.setItem('refresh_token', token);
 };
 
 const clearSession = () => {
   user.value = null;
   setJwtToken(undefined);
-  localStorage.removeItem('auth');
+  localStorage.removeItem('refresh_token');
 };
 
 const setJwtToken = (token) => {

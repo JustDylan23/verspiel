@@ -8,7 +8,6 @@ use App\Manager\RefreshTokenManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class AuthenticationSuccessListener implements EventSubscriberInterface
@@ -39,7 +38,5 @@ class AuthenticationSuccessListener implements EventSubscriberInterface
         $data['refresh_token_expiration'] = $refreshToken->getExpiresAt()->getTimestamp();
 
         $event->setData($data);
-
-        $event->getResponse()->headers->setCookie(Cookie::create('REFRESH_TOKEN', $refreshToken->getRefreshToken(), $refreshToken->getExpiresAt(), '/api/token'));
     }
 }

@@ -8,7 +8,6 @@ use App\Manager\RefreshTokenManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RefreshTokenController extends AbstractController
@@ -19,7 +18,7 @@ class RefreshTokenController extends AbstractController
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManager $refreshTokenManager
     ): array {
-        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request);
+        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request->getContent());
         $refreshTokenManager->assertRefreshTokenValid($refreshToken);
 
         return [
@@ -27,24 +26,12 @@ class RefreshTokenController extends AbstractController
         ];
     }
 
-    #[Route('/fix', methods: ['GET'])]
-    public function fix(): Response
-    {
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $response->headers->clearCookie('REFRESH_TOKEN', '/api/token/refresh');
-        return $response;
-    }
-
     #[Route('/revoke', methods: ['POST'])]
-    public function revoke(Request $request, RefreshTokenManager $refreshTokenManager): Response
+    public function revoke(Request $request, RefreshTokenManager $refreshTokenManager): void
     {
-        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request);
+        $refreshToken = $refreshTokenManager->retrieveRefreshToken($request->getContent());
 
         $refreshTokenManager->assertRefreshTokenValid($refreshToken);
         $refreshTokenManager->revokeRefreshToken($refreshToken);
-
-        $response = new Response(null, Response::HTTP_NO_CONTENT);
-        $response->headers->clearCookie('REFRESH_TOKEN', '/api/token');
-        return $response;
     }
 }
