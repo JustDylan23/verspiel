@@ -18,13 +18,13 @@ class RegistrationCompleteController extends AbstractController
         $user = $userRepository->findOneBy(['emailVerificationToken' => $token]);
 
         if (null === $user) {
-            return $this->redirectToRoute('vue_pages', ['route' => 'not-found']);
+            return $this->redirectToRoute('app_vue_pages', ['route' => 'not-found']);
         }
 
         $user->setVerified(true);
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('vue_pages', ['route' => 'registration/completed']);
+        return $this->redirectToRoute('app_vue_pages', ['route' => 'registration/completed']);
     }
 }
