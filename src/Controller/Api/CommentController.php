@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
 use App\Api\ApiPaginator;
@@ -40,7 +42,7 @@ class CommentController extends AbstractRestController
         CommentRepository $commentRepository,
     ): array {
         $replyTo = $request->query->getInt('replyTo');
-        if ($replyTo === 0) {
+        if (0 === $replyTo) {
             $replyTo = null;
         }
 

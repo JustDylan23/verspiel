@@ -21,7 +21,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class UserAdmin extends AbstractAdmin
 {
-
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {

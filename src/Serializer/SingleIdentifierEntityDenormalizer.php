@@ -37,6 +37,7 @@ class SingleIdentifierEntityDenormalizer implements DenormalizerInterface, Denor
 
     /**
      * {@inheritDoc}
+     *
      * @throws ORMException
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): mixed

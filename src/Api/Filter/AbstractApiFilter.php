@@ -34,5 +34,5 @@ abstract class AbstractApiFilter
         return empty($value) ? null : $value;
     }
 
-    abstract function apply(QueryBuilder $queryBuilder, mixed $value, string $uniqueParameterAlias): void;
+    abstract public function apply(QueryBuilder $queryBuilder, mixed $value, string $uniqueParameterAlias): void;
 }

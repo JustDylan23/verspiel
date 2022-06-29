@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Comment;
@@ -60,6 +62,7 @@ class CommentRepository extends ServiceEntityRepository
         } else {
             $qb->andWhere('c.replyTo IS NULL');
         }
+
         return $qb;
     }
 }

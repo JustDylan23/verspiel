@@ -64,7 +64,7 @@ final class NovelAdmin extends AbstractAdmin
                         'path' => '/ckeditor/plugins/image2/', // with trailing slash
                         'filename' => 'plugin.js',
                     ],
-                ]
+                ],
             ])
             ->end()->end();
     }

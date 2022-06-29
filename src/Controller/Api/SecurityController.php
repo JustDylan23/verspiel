@@ -55,6 +55,7 @@ class SecurityController extends AbstractRestController
 
         if ($violations->count() > 0) {
             $this->entityManager->refresh($user);
+
             return $violations;
         }
 

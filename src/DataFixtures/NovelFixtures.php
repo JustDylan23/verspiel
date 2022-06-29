@@ -10,8 +10,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class NovelFixtures extends Fixture
 {
-    const NOVEL_1 = 'novel_1';
-    const NOVEL_2 = 'novel_2';
+    public const NOVEL_1 = 'novel_1';
+    public const NOVEL_2 = 'novel_2';
 
     public function load(ObjectManager $manager)
     {

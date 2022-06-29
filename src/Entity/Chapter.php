@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\Traits\CommentSectionTrait;
@@ -13,7 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\HasLifecycleCallbacks]
 class Chapter
 {
-    use TimestampableTrait, CommentSectionTrait;
+    use TimestampableTrait;
+    use CommentSectionTrait;
 
     #[ORM\Id] #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -87,6 +90,6 @@ class Chapter
 
     public function __toString(): string
     {
-        return (string)$this->title;
+        return (string) $this->title;
     }
 }
