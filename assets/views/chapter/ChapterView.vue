@@ -12,6 +12,10 @@
       },
     ]"
   />
+  <div class="alert text-bg-primary py-2 text-center">
+    <i class="bi bi-info-circle-fill mx-2"></i>
+    <b>This chapter is a preview.</b>
+  </div>
   <div
     ref="header"
     class="d-flex align-items-center mb-4 sticky-top py-2 bg-dark border-primary"

@@ -23,6 +23,7 @@ class NovelController extends AbstractRestController
             'number',
             'title',
             'createdAt',
+            'published',
         ],
         'commentSection' => [
             'id',

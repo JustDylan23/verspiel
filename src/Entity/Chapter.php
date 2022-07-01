@@ -35,6 +35,9 @@ class Chapter
     #[ORM\JoinColumn(nullable: false)]
     private $novel;
 
+    #[ORM\Column(type: 'boolean')]
+    private $published;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,5 +94,17 @@ class Chapter
     public function __toString(): string
     {
         return (string) $this->title;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
+
+        return $this;
     }
 }

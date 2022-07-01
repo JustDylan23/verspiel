@@ -18,6 +18,7 @@ class ChapterController extends AbstractRestController
         'content',
         'createdAt',
         'number',
+        'published',
         'novel' => [
             'id',
             'title',
@@ -33,6 +34,7 @@ class ChapterController extends AbstractRestController
         'title',
         'createdAt',
         'number',
+        'published',
         'novel' => [
             'id',
             'title',

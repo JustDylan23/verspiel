@@ -20,6 +20,14 @@
           Chapter {{ chapter.number }}
           {{ chapter.title ? '- ' + chapter.title : '' }}
         </template>
+        <template #description>
+          <div
+            v-if="!chapter.published"
+            class="badge rounded-pill text-bg-primary"
+          >
+            preview
+          </div>
+        </template>
       </BaseListItem>
     </div>
   </div>

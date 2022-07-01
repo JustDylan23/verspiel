@@ -8,14 +8,12 @@ const logout = () => {
   clearSession();
 };
 
-const securedAxios = axios.create();
-
 const authenticate = async (credentials) => {
   const { token, refresh_token } = await axios
     .post('/api/token/authenticate', credentials)
     .then((response) => response.data);
   setJwtToken(token);
-  const { data } = await securedAxios.get('/api/users/@me');
+  const { data } = await axios.get('/api/users/@me');
   setRefreshToken(refresh_token);
   user.value = data;
   isAuthenticated.value = true;
@@ -27,7 +25,7 @@ const refreshUser = async () => {
       .post('/api/token/refresh', getRefreshToken())
       .then((response) => response.data);
     setJwtToken(token);
-    const { data } = await securedAxios.get('/api/users/@me');
+    const { data } = await axios.get('/api/users/@me');
     user.value = data;
   } catch (error) {
     clearSession();
@@ -47,7 +45,7 @@ const refreshToken = async () => {
   }
 };
 
-securedAxios.interceptors.response.use(
+axios.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -62,8 +60,7 @@ securedAxios.interceptors.response.use(
       const token = await refreshToken();
       if (token !== null) {
         error.response.config.headers['Authorization'] = `Bearer ${token}`;
-        console.log('retry');
-        return securedAxios(originalRequest);
+        return axios(originalRequest);
       }
     }
     return Promise.reject(error);
@@ -90,9 +87,9 @@ const clearSession = () => {
 
 const setJwtToken = (token) => {
   if (token === undefined) {
-    delete securedAxios.defaults.headers['Authorization'];
+    delete axios.defaults.headers['Authorization'];
   } else {
-    securedAxios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers['Authorization'] = `Bearer ${token}`;
   }
 };
 
@@ -112,7 +109,6 @@ export const useSecurity = () => {
     logout,
     hasSession,
     refreshUser,
-    securedAxios,
     canDeleteComments,
   };
 };

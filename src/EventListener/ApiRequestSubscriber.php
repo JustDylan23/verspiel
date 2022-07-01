@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Logger\DiscordNotifier;
 use App\Validator\InvalidEntityException;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Level;
 use Monolog\LogRecord;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -31,12 +33,14 @@ class ApiRequestSubscriber implements EventSubscriberInterface
         private readonly KernelInterface $kernel,
         private readonly Security $security,
         private readonly DiscordNotifier $discordNotifier,
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            KernelEvents::REQUEST => 'onKernelRequest',
             KernelEvents::VIEW => 'onKernelView',
             KernelEvents::EXCEPTION => ['onKernelException', 2],
         ];
@@ -45,6 +49,13 @@ class ApiRequestSubscriber implements EventSubscriberInterface
     public function onKernelView(ViewEvent $event): void
     {
         $event->setResponse($this->controllerResultToResponse($event));
+    }
+
+    public function onKernelRequest(RequestEvent $event): void
+    {
+        if ($this->isApiRoute() && !$this->security->isGranted('ROLE_ADMIN')) {
+            $this->entityManager->getFilters()->enable('published');
+        }
     }
 
     private function controllerResultToResponse(ViewEvent $event): Response
