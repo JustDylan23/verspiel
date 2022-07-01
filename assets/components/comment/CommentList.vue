@@ -75,7 +75,7 @@
             <i :class="comment.open ? 'bi-chevron-up' : 'bi-chevron-down'" />
           </a>
           <a
-            v-if="canDeleteComments"
+            v-if="canDeleteComments || user.id === comment.author.id"
             class="text-danger"
             @click="deleteComment(comment, key)"
           >
@@ -165,7 +165,7 @@ const props = defineProps({
   },
 });
 
-const { isAuthenticated, canDeleteComments } = useSecurity();
+const { isAuthenticated, canDeleteComments, user } = useSecurity();
 
 const reactions = ref();
 

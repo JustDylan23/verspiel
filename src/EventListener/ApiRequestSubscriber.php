@@ -53,7 +53,7 @@ class ApiRequestSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if ($this->isApiRoute() && !$this->security->isGranted('ROLE_ADMIN')) {
+        if ($this->isApiRoute() && !$this->security->isGranted('ROLE_EDITOR')) {
             $this->entityManager->getFilters()->enable('published');
         }
     }
