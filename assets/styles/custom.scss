@@ -13,12 +13,12 @@ $light-grey: #606368;
 $primary: #bb86fc;
 
 $theme-colors: (
-  'dark': $dark,
-  'dark-grey': $dark-grey,
-  'light-grey': $light-grey,
-  'primary': $primary,
-  'danger': #dc3545,
-  'success': #198754,
+        'dark': $dark,
+        'dark-grey': $dark-grey,
+        'light-grey': $light-grey,
+        'primary': $primary,
+        'danger': #dc3545,
+        'success': #198754,
 );
 
 $body-bg: $dark;
@@ -53,6 +53,9 @@ $pagination-disabled-border-color: $light-grey;
 
 $modal-content-bg: $dark-grey;
 $modal-header-border-width: 0;
+
+$offcanvas-horizontal-width: 250px;
+$offcanvas-transition-duration: .1s;
 
 //$card-bg: $theme-colors["dark"];
 

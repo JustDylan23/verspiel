@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const user = ref(null);
 const isAuthenticated = computed(() => user.value !== null);
+
 const logout = () => {
   axios.post('/api/token/revoke', getRefreshToken());
   clearSession();

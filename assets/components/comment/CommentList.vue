@@ -75,7 +75,7 @@
             <i :class="comment.open ? 'bi-chevron-up' : 'bi-chevron-down'" />
           </a>
           <a
-            v-if="canDeleteComments || user.id === comment.author.id"
+            v-if="canDeleteComments || user?.id === comment.author.id"
             class="text-danger"
             @click="deleteComment(comment, key)"
           >

@@ -24,6 +24,7 @@
         v-if="user.badges.includes('admin') || user.badges.includes('editor')"
         class="dropdown-item"
         href="/admin/dashboard"
+        target="_blank"
       >
         <i class="bi bi-person-lines-fill me-2" />
         Admin
@@ -33,7 +34,7 @@
       <hr class="dropdown-divider" />
     </li>
     <li>
-      <a class="dropdown-item" href="#" @click="logout">
+      <a class="dropdown-item" href="#" @click="logoutApp()">
         <i class="bi bi-box-arrow-right me-2" />
         Logout
       </a>
@@ -43,6 +44,17 @@
 
 <script setup>
 import { useSecurity } from '@/state/security';
+import { useRoute, useRouter } from 'vue-router';
 
 const { logout, user } = useSecurity();
+
+const route = useRoute();
+const router = useRouter();
+
+const logoutApp = () => {
+  if (route?.meta?.auth === true) {
+    router.push({ name: 'home' });
+  }
+  logout();
+};
 </script>
