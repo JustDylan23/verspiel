@@ -1,10 +1,6 @@
 <template>
   <h3 v-if="!success" class="text-center mb-3">Sign up</h3>
-  <div
-    v-if="!success"
-    class="align-self-center card contain"
-    style="max-width: 500px"
-  >
+  <div v-if="!success" class="align-self-center card" style="max-width: 500px">
     <form class="card-body" @submit.prevent="submitForm(registration)">
       <div class="mb-3">
         <label for="usernameInput" class="form-label">Username</label>
