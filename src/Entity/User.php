@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\Traits\TimestampableTrait;
@@ -106,7 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->username;
+        return (string) $this->username;
     }
 
     /**
@@ -138,6 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         if (in_array('ROLE_MODERATOR', $this->roles, true)) {
             $roles[] = 'mod';
         }
+
         return $roles;
     }
 
@@ -172,12 +175,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-         $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function __toString(): string
     {
-        return (string)$this->username;
+        return (string) $this->username;
     }
 
     /**

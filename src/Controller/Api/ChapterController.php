@@ -18,6 +18,7 @@ class ChapterController extends AbstractRestController
         'content',
         'createdAt',
         'number',
+        'published',
         'novel' => [
             'id',
             'title',
@@ -33,6 +34,7 @@ class ChapterController extends AbstractRestController
         'title',
         'createdAt',
         'number',
+        'published',
         'novel' => [
             'id',
             'title',
@@ -74,6 +76,7 @@ class ChapterController extends AbstractRestController
         $array = $this->viewItem($novel);
         $array['nextChapter'] = $chapterRepository->getNextChapter($novel)?->getId();
         $array['previousChapter'] = $chapterRepository->getPreviousChapter($novel)?->getId();
+
         return $array;
     }
 

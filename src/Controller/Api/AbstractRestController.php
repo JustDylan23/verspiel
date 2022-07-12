@@ -88,8 +88,6 @@ abstract class AbstractRestController extends AbstractController
 
     protected function deserializeRequestContent(object $object, array $attributes = null)
     {
-
-
         try {
             return $this->serializer->deserialize(
                 $this->requestStack->getCurrentRequest()->getContent(),

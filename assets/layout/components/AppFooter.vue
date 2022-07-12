@@ -1,5 +1,7 @@
 <template>
-  <footer class="container py-4 d-flex align-items-center text-white-50">
+  <footer
+    class="container py-4 d-none d-sm-flex align-items-center text-white-50"
+  >
     <div class="flex-grow-1">
       {{ new Date().getFullYear() }} &copy; Verspiel
     </div>

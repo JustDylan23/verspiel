@@ -27,14 +27,14 @@ class StringFilter extends AbstractApiFilter
         return empty($value) ? null : $value;
     }
 
-    function apply(QueryBuilder $queryBuilder, mixed $value, string $uniqueParameterAlias): void
+    public function apply(QueryBuilder $queryBuilder, mixed $value, string $uniqueParameterAlias): void
     {
-        $operator = $this->options['type'] === 'exact' ? '=' : 'LIKE';
+        $operator = 'exact' === $this->options['type'] ? '=' : 'LIKE';
         if (is_scalar($this->options['field'])) {
             $queryBuilder->andWhere("{$this->options['field']} {$operator} :{$uniqueParameterAlias}");
-        } else if (is_array($this->options['field'])) {
+        } elseif (is_array($this->options['field'])) {
             $queryBuilder->andWhere(implode(' OR ', array_map(
-                fn($field) => "{$field} {$operator} :{$uniqueParameterAlias}",
+                fn ($field) => "{$field} {$operator} :{$uniqueParameterAlias}",
                 $this->options['field']
             )));
         }

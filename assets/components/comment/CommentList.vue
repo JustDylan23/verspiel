@@ -75,7 +75,7 @@
             <i :class="comment.open ? 'bi-chevron-up' : 'bi-chevron-down'" />
           </a>
           <a
-            v-if="canDeleteComments"
+            v-if="canDeleteComments || user?.id === comment.author.id"
             class="text-danger"
             @click="deleteComment(comment, key)"
           >
@@ -165,7 +165,7 @@ const props = defineProps({
   },
 });
 
-const { isAuthenticated, canDeleteComments, securedAxios } = useSecurity();
+const { isAuthenticated, canDeleteComments, user } = useSecurity();
 
 const reactions = ref();
 
@@ -228,7 +228,7 @@ if (props.replyTo) {
 
 const deleteComment = async (comment, index) => {
   if (confirm('Are you sure you want to delete this comment?')) {
-    await securedAxios.delete('/api/comments/' + comment.id);
+    await axios.delete('/api/comments/' + comment.id);
     emit('remove');
     comments.splice(index, 1);
 

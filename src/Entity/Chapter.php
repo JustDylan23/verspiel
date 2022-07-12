@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\Traits\CommentSectionTrait;
@@ -13,7 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\HasLifecycleCallbacks]
 class Chapter
 {
-    use TimestampableTrait, CommentSectionTrait;
+    use TimestampableTrait;
+    use CommentSectionTrait;
 
     #[ORM\Id] #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -31,6 +34,9 @@ class Chapter
     #[ORM\ManyToOne(targetEntity: Novel::class, inversedBy: 'chapters')]
     #[ORM\JoinColumn(nullable: false)]
     private $novel;
+
+    #[ORM\Column(type: 'boolean')]
+    private $published;
 
     public function getId(): ?int
     {
@@ -87,6 +93,18 @@ class Chapter
 
     public function __toString(): string
     {
-        return (string)$this->title;
+        return (string) $this->title;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(bool $published): self
+    {
+        $this->published = $published;
+
+        return $this;
     }
 }

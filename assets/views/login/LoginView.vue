@@ -1,23 +1,7 @@
 <template>
-  <a
-    class="nav-link dropdown-toggle"
-    href="#"
-    role="button"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  >
-    Login
-  </a>
-  <div
-    class="dropdown-menu dropdown-menu-end"
-    style="z-index: 1200; min-width: 200px"
-  >
-    <form
-      class="px-4 py-3"
-      autocomplete="off"
-      @submit.prevent="login"
-      @click.stop
-    >
+  <h3 class="text-center mb-3">Log in</h3>
+  <div class="card align-self-center card contain" style="max-width: 500px">
+    <form class="card-body" @submit.prevent="login">
       <div class="mb-3">
         <label for="loginFormUsername" class="form-label">Username</label>
         <input
@@ -53,21 +37,23 @@
       <div v-if="error" class="text-danger mt-2">
         {{ error }}
       </div>
+      <div class="d-flex flex-column mt-2">
+        <RouterLink :to="{ name: 'register' }">
+          New around here? Sign up
+        </RouterLink>
+        <RouterLink :to="{ name: 'password-reset-request' }">
+          Forgot password?
+        </RouterLink>
+      </div>
     </form>
-    <div class="dropdown-divider" />
-    <RouterLink class="dropdown-item" :to="{ name: 'register' }">
-      New around here? Sign up
-    </RouterLink>
-    <RouterLink class="dropdown-item" :to="{ name: 'password-reset-request' }">
-      Forgot password?
-    </RouterLink>
   </div>
 </template>
 
 <script setup>
 import { reactive, ref } from 'vue';
 import { useSecurity } from '@/state/security';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { useToast } from '@/utils/notification.js';
 
 const isSubmitting = ref(false);
 const error = ref(false);
@@ -76,18 +62,18 @@ const formData = reactive({
   password: '',
 });
 
-const { authenticate } = useSecurity();
+const { success } = useToast();
 
-const route = useRoute();
+const { authenticate, user } = useSecurity();
+
 const router = useRouter();
 
 const login = async () => {
   isSubmitting.value = true;
   try {
     await authenticate(formData);
-    if (route?.meta?.auth === false) {
-      await router.push({ name: 'home' });
-    }
+    success('Welcome ' + user.value.username);
+    await router.push({ name: 'home' });
   } catch (e) {
     error.value = e.response.data.message;
   }

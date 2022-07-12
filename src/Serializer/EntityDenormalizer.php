@@ -28,7 +28,6 @@ class EntityDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
      */
     public function supportsDenormalization($data, string $type, string $format = null, array $context = []): bool
     {
-
         return !isset($context[self::ALREADY_CALLED])
             && !empty((new \ReflectionClass($type))->getAttributes(Entity::class))
             && is_array($data)
@@ -37,12 +36,13 @@ class EntityDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
 
     /**
      * {@inheritDoc}
+     *
      * @throws ORMException
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): mixed
     {
         $context[self::ALREADY_CALLED] = true;
-        $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $this->em->getReference($type, array_map(fn($el) => $data[$el], $this->em->getClassMetadata($type)->getIdentifier()));
+        $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $this->em->getReference($type, array_map(fn ($el) => $data[$el], $this->em->getClassMetadata($type)->getIdentifier()));
 
         return $this->denormalizer->denormalize($data, $type, $format, $context);
     }

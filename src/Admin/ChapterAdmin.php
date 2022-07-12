@@ -30,6 +30,7 @@ final class ChapterAdmin extends AbstractAdmin
         $list
             ->addIdentifier('title', fieldDescriptionOptions: ['route' => ['name' => 'edit']])
             ->add('number')
+            ->add('published')
         ;
 
         if (!$this->isChild()) {
@@ -55,6 +56,7 @@ final class ChapterAdmin extends AbstractAdmin
             ->tab('General')->with('Main')
             ->add('number')
             ->add('title')
+            ->add('published')
             ->add('content', CKEditorType::class, [
                 'config' => [
                     'extraPlugins' => ['autogrow', 'image2'],
@@ -68,7 +70,7 @@ final class ChapterAdmin extends AbstractAdmin
                         'path' => '/ckeditor/plugins/image2/', // with trailing slash
                         'filename' => 'plugin.js',
                     ],
-                ]
+                ],
             ])
             ->end()->end();
     }

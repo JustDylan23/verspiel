@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ChapterFixtures extends Fixture implements DependentFixtureInterface
 {
-    const CHAPTER_1 = 'chapter_1';
+    public const CHAPTER_1 = 'chapter_1';
 
     public function load(ObjectManager $manager)
     {
@@ -21,12 +21,12 @@ class ChapterFixtures extends Fixture implements DependentFixtureInterface
 
         foreach (range(1, 30) as $i) {
             $chapter = new Chapter();
-            $chapter->setTitle('Title ' . $i);
+            $chapter->setTitle('Title '.$i);
             $chapter->setContent(file_get_contents(__DIR__.'/LoremIpsum.txt'));
             $chapter->setNumber($i);
-            $chapter->setCreatedAt(new \DateTime(31 - $i . ' days ago'));
+            $chapter->setCreatedAt(new \DateTime(31 - $i.' days ago'));
             $novel->addChapter($chapter);
-            if ($i === 1) {
+            if (1 === $i) {
                 $this->setReference(self::CHAPTER_1, $chapter);
             }
         }

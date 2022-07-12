@@ -7,7 +7,6 @@ namespace App\Manager;
 use App\Entity\RefreshToken;
 use App\Repository\RefreshTokenRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Security;

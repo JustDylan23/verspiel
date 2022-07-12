@@ -3,6 +3,14 @@
     class="navbar navbar-expand navbar-dark mb-3 border-bottom border-primary"
   >
     <div class="container">
+      <button
+        class="btn d-block d-sm-none rounded-3 me-2"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#leftOffcanvas"
+        type="button"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <RouterLink
         class="navbar-brand me-auto position-relative"
         z
@@ -14,58 +22,43 @@
           width="32"
           alt="header icon"
         />
-        <span class="position-absolute" style="left: 32px; top: 10px">
+        <span
+          class="position-absolute"
+          style="left: 32px; top: 6px; font-size: 25px"
+        >
           erspiel
         </span>
       </RouterLink>
       <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            :class="{ abcd: $route.name === 'browse' }"
-          >
-            Browse
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1200">
-            <li>
-              <RouterLink
-                class="dropdown-item"
-                :to="{ name: 'browse', params: { type: 'novels' } }"
-                active-class="active"
-              >
-                <i class="bi bi-book me-2"></i>
-                Novels
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink
-                class="dropdown-item"
-                :to="{ name: 'browse', params: { type: 'chapters' } }"
-                active-class="active"
-              >
-                <i class="bi bi-bookmark me-2"></i>
-                Chapters
-              </RouterLink>
-            </li>
-          </ul>
+        <AppBrowseDropdown />
+        <li class="nav-item dropdown d-none d-sm-block">
+          <AppAuthenticatedDropdown v-if="isAuthenticated" />
+          <AppAnonymousDropdown v-else />
         </li>
-        <li class="nav-item dropdown">
-          <AppDropdown v-if="isAuthenticated" />
-          <AppLogin v-else />
+        <li class="nav-item dropdown d-block d-sm-none">
+          <a
+            class="nav-link py-0 d-block d-sm-none rounded-3 me-2"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#rightOffcanvas"
+            type="button"
+          >
+            <span class="fs-1 bi-person-circle"></span>
+          </a>
         </li>
       </ul>
     </div>
   </nav>
+  <LeftOffcanvas />
+  <RightOffcanvas />
 </template>
 
 <script setup>
-import AppLogin from '@/layout/components/AppLogin.vue';
+import AppAnonymousDropdown from '@/layout/components/AppAnonymousDropdown.vue';
 import { useSecurity } from '@/state/security';
-import AppDropdown from '@/layout/components/AppDropdown.vue';
+import AppAuthenticatedDropdown from '@/layout/components/AppAuthenticatedDropdown.vue';
+import LeftOffcanvas from '@/layout/components/mobile/LeftOffcanvas.vue';
+import RightOffcanvas from '@/layout/components/mobile/RightOffcanvas.vue';
+import AppBrowseDropdown from '@/layout/components/AppBrowseDropdown.vue';
 
 const { isAuthenticated } = useSecurity();
 </script>

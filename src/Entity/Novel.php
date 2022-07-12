@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Entity\Traits\CommentSectionTrait;
@@ -14,7 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Novel
 {
-    use TimestampableTrait, CommentSectionTrait;
+    use TimestampableTrait;
+    use CommentSectionTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -118,7 +121,7 @@ class Novel
 
     public function __toString(): string
     {
-        return (string)$this->title;
+        return (string) $this->title;
     }
 
     public function isFeatured(): ?bool

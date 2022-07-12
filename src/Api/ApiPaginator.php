@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ApiPaginator
 {
-    const PAGE_SIZE = 10;
+    public const PAGE_SIZE = 10;
 
     public function __construct(
         private readonly RequestStack $requestStack,
@@ -35,7 +35,7 @@ class ApiPaginator
         return [
             'items' => $paginator->getIterator()->getArrayCopy(),
             'rows' => count($paginator),
-            'perPage' => $pageSize
+            'perPage' => $pageSize,
         ];
     }
 
@@ -51,7 +51,7 @@ class ApiPaginator
         ;
         if ($cursor) {
             $queryBuilder
-                ->andWhere($queryBuilder->getRootAliases()[0].'.id '.($order === 'ASC' ? '>' : '<').' :id')
+                ->andWhere($queryBuilder->getRootAliases()[0].'.id '.('ASC' === $order ? '>' : '<').' :id')
                 ->setParameter('id', $cursor)
             ;
         }
@@ -69,7 +69,7 @@ class ApiPaginator
 
         return [
             'items' => $items,
-            'cursor' => \count($items) === self::PAGE_SIZE ? end($items)->getId() : null,
+            'cursor' => self::PAGE_SIZE === \count($items) ? end($items)->getId() : null,
         ];
     }
 }

@@ -27,7 +27,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         foreach (range(1, 10) as $i) {
             $reply = new Comment();
             $reply->setAuthor($this->getReference(UserFixtures::USER_ADMIN));
-            $reply->setContent('reply_' . $i);
+            $reply->setContent('reply_'.$i);
             $reply->setReplyTo($comment);
             $commentSection->addComment($reply);
         }
@@ -35,7 +35,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         foreach (range(1, 30) as $i) {
             $comment = new Comment();
             $comment->setAuthor($this->getReference(UserFixtures::USER_NORMAL));
-            $comment->setContent('comment_' . $i);
+            $comment->setContent('comment_'.$i);
             $commentSection->addComment($comment);
         }
 
@@ -46,7 +46,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         foreach (range(1, 10) as $i) {
             $comment = new Comment();
             $comment->setAuthor($this->getReference(UserFixtures::USER_NORMAL));
-            $comment->setContent('comment_' . $i);
+            $comment->setContent('comment_'.$i);
             $commentSection->addComment($comment);
         }
 

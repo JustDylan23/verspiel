@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Logger;
 
-use Error;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
@@ -26,7 +25,6 @@ class DiscordNotifier extends AbstractProcessingHandler
         parent::__construct(Level::Critical, false);
     }
 
-
     public function write(LogRecord $record): void
     {
         if (null === $this->requestStack->getCurrentRequest()) {
@@ -38,16 +36,19 @@ class DiscordNotifier extends AbstractProcessingHandler
         $discordOptions = (new DiscordOptions())
             ->username('Verspiel logger')
             ->avatarUrl($this->urlHelper->getAbsoluteUrl('/android-chrome-192x192.png'))
-            ->addEmbed((new DiscordEmbed())
+            ->addEmbed(
+                (new DiscordEmbed())
                 ->color(12289788)
                 ->timestamp((new \DateTime())->setTimestamp($record->datetime->getTimestamp()))
                 ->title('Internal server error')
                 ->description(empty($record->message) ? 'No message' : $record->message)
-                ->addField((new DiscordFieldEmbedObject())
+                ->addField(
+                    (new DiscordFieldEmbedObject())
                     ->name('Request URI')
                     ->value($this->requestStack?->getCurrentRequest()?->getRequestUri() ?? 'N/A')
                 )
-                ->addField((new DiscordFieldEmbedObject())
+                ->addField(
+                    (new DiscordFieldEmbedObject())
                     ->name('Channel')
                     ->value(empty($record->channel) ? 'N/A' : $record->channel)
                 )
